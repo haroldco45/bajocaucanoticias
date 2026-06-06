@@ -698,7 +698,7 @@ async function generarNoticia() {
   const catId = categoriaActiva === "todo" ? "comunidad" : categoriaActiva;
   const cat = getCat(catId);
   try {
-    const resp = await fetch("https://api.anthropic.com/v1/messages", {
+    const resp = await fetch("/.netlify/functions/claude", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -806,7 +806,7 @@ async function enviarMensaje() {
   document.getElementById("chat-estado").textContent = "⏳ Escribiendo…";
   try {
     const historial = mensajesChat.map(m => ({ role: m.role, content: m.texto }));
-    const resp = await fetch("https://api.anthropic.com/v1/messages", {
+    const resp = await fetch("/.netlify/functions/claude", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
