@@ -83,6 +83,7 @@ main{max-width:960px;margin:0 auto;padding:20px 16px 80px}
 .skeleton{background:linear-gradient(90deg,#1a1a1a 25%,#222 50%,#1a1a1a 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:8px}
 .skeleton-card{background:var(--fondo2);border:1px solid var(--borde);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px}
 .sk-title{height:18px;width:85%}.sk-line{height:12px;width:100%}.sk-line2{height:12px;width:70%}.sk-badge{height:10px;width:40%}
+@keyframes progreso{0%{width:0%}50%{width:60%}100%{width:100%}}
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
 #info-bar{text-align:center;padding:10px;color:#555;font-size:11px;font-family:monospace;border-bottom:1px solid var(--borde);margin-bottom:16px}
@@ -282,9 +283,9 @@ footer .footer-marca{color:#777;margin-bottom:4px}
 
 <div id="splash-carga">
   <div class="splash-logo">Bajo Cauca Noticias</div>
-  <div class="splash-sub">Buscando noticias reales…</div>
-  <div class="splash-barra"><div class="splash-progreso" id="splash-prog"></div></div>
-  <div class="splash-estado" id="splash-estado">📡 Conectando con medios colombianos…</div>
+  <div class="splash-sub">La voz del Nordeste Antioqueño</div>
+  <div class="splash-barra"><div class="splash-progreso" id="splash-prog" style="animation:progreso 2s ease forwards"></div></div>
+  <div class="splash-estado" id="splash-estado">🤖 Preparando noticias del día…</div>
 </div>
 
 <header>
@@ -1133,7 +1134,49 @@ renderCats();
 renderNoticias();
 renderDemocracia();
 renderClasificados();
-cargarNoticias(true);
+
+// Ocultar splash en MÁXIMO 2 segundos pase lo que pase
+const splashEl2 = document.getElementById("splash-carga");
+const SPLASH_TIMEOUT = setTimeout(()=>{
+  if(splashEl2) splashEl2.style.display="none";
+}, 2000);
+
+// Cargar noticias IA rápido
+(async()=>{
+  try{
+    const fecha=new Date().toLocaleString("es-CO",{timeZone:"America/Bogota",dateStyle:"full"});
+    const CATS_INIT=["seguridad","economia","comunidad","mineria"];
+    const rapidas = await Promise.all(CATS_INIT.map(async cat=>{
+      try{
+        const r=await fetch(API_CLAUDE,{
+          method:"POST",headers:{"Content-Type":"application/json"},
+          body:JSON.stringify({
+            system:"Periodista Bajo Cauca. SOLO JSON sin backticks.",
+            messages:[{role:"user",content:`Noticia de ${cat} en Bajo Cauca Antioqueño para ${fecha}. JSON: {"titulo":"...","resumen":"...","categoria":"${cat}"}`}],
+            max_tokens:350
+          })
+        });
+        const d=await r.json();
+        const raw=(d.content?.find(b=>b.type==="text")?.text||"{}").replace(/```json|```/g,"").trim();
+        const obj=JSON.parse(raw);
+        const hora=new Date().toLocaleString("en-US",{timeZone:"America/Bogota",hour:"2-digit",minute:"2-digit",hour12:false});
+        return {id:Date.now()+Math.random(),cat,titulo:obj.titulo,resumen:obj.resumen,fuente:"IA",hora,nueva:true,real:false};
+      }catch{return null;}
+    }));
+    noticias=[...rapidas.filter(Boolean)].slice(0,20);
+    renderNoticias();
+  }catch(e){console.log("Init IA:",e.message);}
+  
+  // Quitar splash cuando terminen las noticias
+  clearTimeout(SPLASH_TIMEOUT);
+  if(splashEl2) splashEl2.style.display="none";
+  
+  proximaAct=Date.now()+INTERVALO_MS;
+  iniciarContador();
+  
+  // RSS en segundo plano después de 3 segundos
+  setTimeout(()=>cargarRSSSegundoPlano(), 3000);
+})();
 </script>
 </body>
 </html>
