@@ -465,53 +465,85 @@ setInterval(rotarTicker,5000);
 
 // ── CARGAR NOTICIAS REALES ───────────────────────────────
 async function cargarNoticias(mostrarSplash=false){
-  const splashEl=document.getElementById("splash-estado");
-  const progEl=document.getElementById("splash-prog");
 
-  const estados=[
-    "📡 Conectando con El Colombiano, Caracol, El Tiempo…",
-    "🔍 Buscando noticias del Bajo Cauca…",
-    "🤖 IA resumiendo noticias encontradas…",
-    "✅ Preparando edición…"
-  ];
-  let prog=0;
-  const timer=mostrarSplash?setInterval(()=>{
-    prog=Math.min(prog+25,90);
-    if(progEl)progEl.style.width=prog+"%";
-    const idx=Math.floor(prog/25);
-    if(splashEl&&estados[idx])splashEl.textContent=estados[idx];
-  },1200):null;
+  // ── FASE 1: arranque instantáneo con IA (< 4 seg) ──
+  if(mostrarSplash){
+    const splashEl=document.getElementById("splash-estado");
+    if(splashEl) splashEl.textContent="🤖 Generando noticias del día…";
+    const progEl=document.getElementById("splash-prog");
+    if(progEl) progEl.style.width="30%";
 
+    // Generar 4 noticias IA rápido en paralelo
+    const CATS_RAPIDO=["seguridad","economia","comunidad","mineria"];
+    const fecha=new Date().toLocaleString("es-CO",{timeZone:"America/Bogota",dateStyle:"full"});
+    const rapidas = await Promise.all(CATS_RAPIDO.map(async cat=>{
+      try{
+        const r=await fetch(API_CLAUDE,{method:"POST",headers:{"Content-Type":"application/json"},
+          body:JSON.stringify({
+            system:"Eres periodista del Bajo Cauca Antioqueño. Responde SOLO en JSON sin backticks.",
+            messages:[{role:"user",content:`Genera noticia verosímil de ${cat} en el Bajo Cauca para ${fecha}. JSON: {"titulo":"...","resumen":"...","categoria":"${cat}"}`}],
+            max_tokens:400
+          })});
+        const d=await r.json();
+        const raw=(d.content?.find(b=>b.type==="text")?.text||"{}").replace(/\`\`\`json|\`\`\`/g,"").trim();
+        const obj=JSON.parse(raw);
+        const hora=new Date().toLocaleString("en-US",{timeZone:"America/Bogota",hour:"2-digit",minute:"2-digit",hour12:false});
+        return {id:Date.now()+Math.random(),cat,titulo:obj.titulo,resumen:obj.resumen,fuente:"IA",hora,nueva:true,real:false};
+      }catch{return null;}
+    }));
+    noticias=[...rapidas.filter(Boolean),...noticias].slice(0,30);
+
+    if(progEl) progEl.style.width="70%";
+    if(splashEl) splashEl.textContent="✅ ¡Listo! Buscando noticias reales en segundo plano…";
+
+    renderCats(); renderNoticias();
+
+    // Ocultar splash rápido
+    setTimeout(()=>{
+      document.getElementById("splash-carga").style.display="none";
+      proximaAct=Date.now()+INTERVALO_MS;
+      iniciarContador();
+    },800);
+
+    // ── FASE 2: RSS en segundo plano (sin bloquear UI) ──
+    setTimeout(()=>cargarRSSSegundoPlano(), 1500);
+    return;
+  }
+
+  // Actualización manual → solo RSS
+  await cargarRSSSegundoPlano();
+}
+
+async function cargarRSSSegundoPlano(){
   try{
-    const r=await fetch(API_NOTICIAS);
+    const infoEl=document.getElementById("info-bar");
+    if(infoEl) infoEl.innerHTML=`🔄 Buscando noticias reales de medios colombianos…`;
+
+    // Timeout de 15 segundos para no colgar
+    const controller = new AbortController();
+    const timeout = setTimeout(()=>controller.abort(), 15000);
+
+    const r=await fetch(API_NOTICIAS, {signal: controller.signal});
+    clearTimeout(timeout);
     const d=await r.json();
+
     if(d.noticias&&d.noticias.length>0){
-      noticias=[...d.noticias,...noticias].slice(0,30);
-      // Info bar
-      const infoEl=document.getElementById("info-bar");
+      // Mezclar RSS con las IA que ya hay, RSS primero
+      const idsExistentes=new Set(noticias.map(n=>n.titulo));
+      const nuevasRSS=d.noticias.filter(n=>!idsExistentes.has(n.titulo));
+      noticias=[...nuevasRSS,...noticias].slice(0,30);
+
       if(infoEl){
         const reales=d.reales||0;
         const ia=d.total-reales;
-        infoEl.innerHTML=`📰 <strong>${reales}</strong> noticias de medios reales &nbsp;·&nbsp; 🤖 <strong>${ia}</strong> generadas con IA &nbsp;·&nbsp; Actualizado hace un momento`;
+        infoEl.innerHTML=`📰 <strong>${reales}</strong> noticias de medios reales &nbsp;·&nbsp; 🤖 <strong>${ia}</strong> generadas con IA &nbsp;·&nbsp; <span style="color:#4caf50">✅ Actualizado</span>`;
       }
+      renderNoticias();
     }
   }catch(e){
-    console.log("Error cargando noticias:",e.message);
-  }
-
-  if(timer)clearInterval(timer);
-  if(progEl)progEl.style.width="100%";
-
-  renderCats();
-  renderNoticias();
-
-  proximaAct=Date.now()+INTERVALO_MS;
-  iniciarContador();
-
-  if(mostrarSplash){
-    setTimeout(()=>{
-      document.getElementById("splash-carga").style.display="none";
-    },800);
+    console.log("RSS background:", e.message);
+    const infoEl=document.getElementById("info-bar");
+    if(infoEl) infoEl.innerHTML=`🤖 Noticias generadas con IA · Medios no disponibles en este momento`;
   }
 }
 
