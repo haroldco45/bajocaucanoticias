@@ -7,13 +7,11 @@
 <meta name="theme-color" content="#e63946"/>
 <meta name="mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="apple-mobile-web-app-title" content="BCN Noticias"/>
 <meta property="og:type" content="website"/>
 <meta property="og:title" content="Bajo Cauca Noticias — La voz del Nordeste Antioqueño"/>
-<meta property="og:description" content="Revista digital del Bajo Cauca Antioqueño con IA. Noticias frescas de Caucasia, El Bagre, Nechí, Tarazá, Cáceres y Zaragoza."/>
+<meta property="og:description" content="Noticias reales del Bajo Cauca con IA. Caucasia, El Bagre, Nechí, Tarazá, Cáceres y Zaragoza."/>
 <meta property="og:url" content="https://noticiasbajocauca.netlify.app/"/>
-<meta name="twitter:card" content="summary_large_image"/>
 <link rel="manifest" id="manifest-link"/>
 <style>
 :root{--rojo:#e63946;--rojo-oscuro:#c1121f;--fondo:#0a0a0f;--fondo2:#111;--fondo3:#1a1a1a;--texto:#f0ece0;--texto2:#ccc;--texto3:#888;--borde:#222;--borde2:#333}
@@ -39,38 +37,36 @@ nav#categorias{background:#111;border-bottom:1px solid var(--borde);padding:8px 
 nav#categorias::-webkit-scrollbar{display:none}
 .cat-btn{background:transparent;border:1px solid var(--borde2);color:#aaa;padding:5px 14px;border-radius:20px;cursor:pointer;font-size:12px;white-space:nowrap;transition:all .2s;font-family:Georgia,serif;flex-shrink:0}
 .cat-btn.activo{color:#fff;font-weight:700}
-.btn-generar{margin-left:auto;background:linear-gradient(135deg,var(--rojo),var(--rojo-oscuro));border:none;color:#fff;padding:5px 16px;border-radius:20px;cursor:pointer;font-size:12px;font-weight:700;white-space:nowrap;flex-shrink:0;transition:all .2s;font-family:Georgia,serif}
-.btn-generar:disabled{background:#333;cursor:not-allowed}
+.btn-actualizar{margin-left:auto;background:linear-gradient(135deg,var(--rojo),var(--rojo-oscuro));border:none;color:#fff;padding:5px 16px;border-radius:20px;cursor:pointer;font-size:12px;font-weight:700;white-space:nowrap;flex-shrink:0;font-family:Georgia,serif}
+.btn-actualizar:disabled{background:#333;cursor:not-allowed}
 
 main{max-width:960px;margin:0 auto;padding:20px 16px 80px}
 
-/* Splash de carga automática */
-#splash-carga{
-  position:fixed;inset:0;background:var(--fondo);z-index:2000;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;
-}
+#splash-carga{position:fixed;inset:0;background:var(--fondo);z-index:2000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px}
 .splash-logo{font-size:clamp(28px,6vw,48px);font-weight:900;text-transform:uppercase;background:linear-gradient(180deg,#fff 40%,var(--rojo) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .splash-sub{font-size:13px;color:#777;letter-spacing:4px;text-transform:uppercase}
-.splash-barra{width:200px;height:3px;background:#222;border-radius:2px;overflow:hidden;margin-top:8px}
-.splash-progreso{height:100%;background:var(--rojo);border-radius:2px;animation:progreso 4s ease-in-out forwards}
+.splash-barra{width:200px;height:3px;background:#222;border-radius:2px;overflow:hidden}
+.splash-progreso{height:100%;background:var(--rojo);border-radius:2px;width:0;transition:width .5s ease}
 .splash-estado{font-size:12px;color:#666;font-family:monospace;text-align:center;min-height:20px}
-@keyframes progreso{0%{width:0%}20%{width:15%}50%{width:45%}80%{width:75%}100%{width:95%}}
 
 .noticia-destacada{background:linear-gradient(135deg,#1a0808 0%,#150505 100%);border:2px solid var(--rojo);border-radius:12px;padding:24px;margin-bottom:24px;cursor:pointer;position:relative;overflow:hidden;transition:transform .2s;animation:slideIn .4s ease}
 .noticia-destacada:hover{transform:translateY(-2px)}
 .noticia-destacada::before{content:'';position:absolute;top:0;right:0;width:200px;height:200px;background:radial-gradient(circle at top right,rgba(230,57,70,.15),transparent);pointer-events:none}
 .badge{display:inline-block;background:var(--rojo);color:#fff;padding:2px 10px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:2px;margin-bottom:10px;font-family:monospace}
-.badge.nuevo{animation:pulse 1.5s infinite}
+.badge.real{background:#2a9d8f}
+.badge.ia{background:#9b5de5}
 .cat-meta{font-size:11px;color:var(--rojo);margin-bottom:8px;font-family:monospace}
 .noticia-destacada h2{font-size:clamp(18px,3vw,26px);font-weight:700;line-height:1.3;color:#fff;margin-bottom:12px}
 .noticia-destacada p{font-size:15px;color:var(--texto2);line-height:1.6}
 .leer-mas{margin-top:16px;font-size:12px;color:var(--rojo);font-weight:700}
+.fuente-tag{font-size:10px;color:#555;margin-top:8px;font-family:monospace}
 
 .grid-noticias{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
 .card-noticia{background:var(--fondo2);border:1px solid var(--borde);border-radius:10px;padding:16px;cursor:pointer;transition:all .2s;position:relative;animation:slideIn .3s ease}
 .card-noticia:hover{transform:translateY(-2px)}
-.card-noticia.nueva{border-color:var(--rojo)}
-.badge-mini{position:absolute;top:10px;right:10px;background:var(--rojo);color:#fff;padding:1px 7px;border-radius:4px;font-size:9px;font-weight:700;letter-spacing:1px;font-family:monospace}
+.badge-mini{position:absolute;top:10px;right:10px;color:#fff;padding:1px 7px;border-radius:4px;font-size:9px;font-weight:700;letter-spacing:1px;font-family:monospace}
+.badge-mini.real{background:#2a9d8f}
+.badge-mini.ia{background:#9b5de5}
 .card-noticia h3{font-size:15px;font-weight:700;line-height:1.4;color:var(--texto);margin:8px 0}
 .card-noticia p{font-size:13px;color:var(--texto3);line-height:1.5}
 
@@ -82,24 +78,17 @@ main{max-width:960px;margin:0 auto;padding:20px 16px 80px}
 .detalle-acciones{margin-top:16px;display:flex;gap:10px;flex-wrap:wrap}
 .btn-escuchar{background:var(--rojo);border:none;color:#fff;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:700;font-family:Georgia,serif}
 .btn-preguntar{background:transparent;border:1px solid #444;color:#aaa;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:13px;font-family:Georgia,serif}
+.btn-fuente{background:transparent;border:1px solid #2a9d8f;color:#2a9d8f;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:13px;font-family:Georgia,serif;text-decoration:none;display:inline-flex;align-items:center}
 
-/* Skeleton loader */
 .skeleton{background:linear-gradient(90deg,#1a1a1a 25%,#222 50%,#1a1a1a 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:8px}
 .skeleton-card{background:var(--fondo2);border:1px solid var(--borde);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px}
-.sk-title{height:18px;width:85%}
-.sk-line{height:12px;width:100%}
-.sk-line2{height:12px;width:70%}
-.sk-badge{height:10px;width:40%}
+.sk-title{height:18px;width:85%}.sk-line{height:12px;width:100%}.sk-line2{height:12px;width:70%}.sk-badge{height:10px;width:40%}
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
-/* Contador próxima actualización */
-#contador-update{
-  text-align:center;padding:12px;color:#555;font-size:11px;font-family:monospace;
-  border-top:1px solid var(--borde);margin-top:20px;
-}
+#info-bar{text-align:center;padding:10px;color:#555;font-size:11px;font-family:monospace;border-bottom:1px solid var(--borde);margin-bottom:16px}
+#contador-update{text-align:center;padding:12px;color:#555;font-size:11px;font-family:monospace;border-top:1px solid var(--borde);margin-top:20px}
 
 .empty{text-align:center;padding:60px 20px;color:#555}
-.empty .emoji{font-size:40px;margin-bottom:12px}
 footer{border-top:1px solid var(--borde);padding:20px;text-align:center;color:#555;font-size:11px;font-family:monospace}
 footer .footer-marca{color:#777;margin-bottom:4px}
 
@@ -109,8 +98,7 @@ footer .footer-marca{color:#777;margin-bottom:4px}
 #panel-chat.visible{display:flex}
 .chat-header{background:linear-gradient(135deg,#1a0505,#0f0f0f);padding:14px 16px;border-bottom:1px solid var(--borde);display:flex;align-items:center;gap:10px}
 .chat-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--rojo),var(--rojo-oscuro));display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
-.chat-nombre{font-weight:700;font-size:14px}
-.chat-estado{font-size:11px;color:var(--rojo)}
+.chat-nombre{font-weight:700;font-size:14px}.chat-estado{font-size:11px;color:var(--rojo)}
 #chat-mensajes{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
 .msg{max-width:85%;padding:10px 14px;font-size:13px;line-height:1.6;color:var(--texto);white-space:pre-wrap}
 .msg.bot{align-self:flex-start;background:var(--fondo3);border:1px solid #2a2a2a;border-radius:16px 16px 16px 4px}
@@ -122,10 +110,8 @@ footer .footer-marca{color:#777;margin-bottom:4px}
 #chat-input{flex:1;background:var(--fondo3);border:1px solid #2a2a2a;border-radius:10px;padding:10px 14px;color:var(--texto);font-size:13px;outline:none;font-family:Georgia,serif}
 #chat-input::placeholder{color:#555}
 .btn-mic,.btn-send{border-radius:10px;border:none;cursor:pointer;font-size:18px;color:#fff;padding:0 12px;transition:all .2s;display:flex;align-items:center;justify-content:center;min-width:44px;height:44px}
-.btn-mic{background:var(--fondo3);border:1px solid var(--borde2)}
-.btn-mic.escuchando{background:var(--rojo);animation:pulse 1s infinite}
-.btn-send{background:linear-gradient(135deg,var(--rojo),var(--rojo-oscuro))}
-.btn-send:disabled{background:#222;cursor:not-allowed}
+.btn-mic{background:var(--fondo3);border:1px solid var(--borde2)}.btn-mic.escuchando{background:var(--rojo);animation:pulse 1s infinite}
+.btn-send{background:linear-gradient(135deg,var(--rojo),var(--rojo-oscuro))}.btn-send:disabled{background:#222;cursor:not-allowed}
 .quick-actions{padding:0 12px 12px;display:flex;gap:6px;flex-wrap:wrap}
 .quick-btn{background:transparent;border:1px solid #2a2a2a;color:#666;padding:4px 10px;border-radius:12px;cursor:pointer;font-size:11px;transition:all .2s;font-family:Georgia,serif}
 .quick-btn:hover{border-color:var(--rojo);color:var(--rojo)}
@@ -136,12 +122,11 @@ footer .footer-marca{color:#777;margin-bottom:4px}
 </head>
 <body>
 
-<!-- SPLASH DE CARGA -->
 <div id="splash-carga">
   <div class="splash-logo">Bajo Cauca Noticias</div>
-  <div class="splash-sub">Caucasia · El Bagre · Nechí · Tarazá · Cáceres · Zaragoza</div>
-  <div class="splash-barra"><div class="splash-progreso"></div></div>
-  <div class="splash-estado" id="splash-estado">🤖 Iniciando sala de redacción con IA…</div>
+  <div class="splash-sub">Buscando noticias reales…</div>
+  <div class="splash-barra"><div class="splash-progreso" id="splash-prog"></div></div>
+  <div class="splash-estado" id="splash-estado">📡 Conectando con medios colombianos…</div>
 </div>
 
 <header>
@@ -158,20 +143,18 @@ footer .footer-marca{color:#777;margin-bottom:4px}
   </div>
   <div class="ticker-bar">
     <span class="ticker-label">ÚLTIMA HORA</span>
-    <span class="ticker-text" id="ticker">🔴 Cargando noticias frescas del Bajo Cauca…</span>
+    <span class="ticker-text" id="ticker">📡 Conectando con fuentes reales del Bajo Cauca…</span>
   </div>
 </header>
 
 <nav id="categorias"></nav>
 
 <main>
+  <div id="info-bar"></div>
   <div id="destacada-wrap"></div>
   <div id="detalle"></div>
   <div class="grid-noticias" id="grid"></div>
-  <div class="empty" id="empty" style="display:none">
-    <div class="emoji">📭</div>
-    <p>No hay noticias en esta categoría aún.</p>
-  </div>
+  <div class="empty" id="empty" style="display:none"><p>No hay noticias en esta categoría.</p></div>
   <div id="contador-update"></div>
 </main>
 
@@ -180,17 +163,14 @@ footer .footer-marca{color:#777;margin-bottom:4px}
   <div>Desarrollada por Vibras Positivas HM — Derechos de Autor Reservados © 2026</div>
 </footer>
 
-<button id="btn-chat" title="Asistente IA">🎙️</button>
+<button id="btn-chat">🎙️</button>
 <div id="panel-chat">
   <div class="chat-header">
     <div class="chat-avatar">🗞️</div>
-    <div>
-      <div class="chat-nombre">Asistente BCN</div>
-      <div class="chat-estado" id="chat-estado">🟢 En línea · IA Activa</div>
-    </div>
+    <div><div class="chat-nombre">Asistente BCN</div><div class="chat-estado" id="chat-estado">🟢 En línea · IA Activa</div></div>
   </div>
   <div id="chat-mensajes">
-    <div class="msg bot">¡Hola! Soy el asistente de Bajo Cauca Noticias. Pregúntame sobre la región, los municipios, o pídeme que amplíe cualquier noticia. 🗞️</div>
+    <div class="msg bot">¡Hola! Soy el asistente de Bajo Cauca Noticias. Pregúntame sobre la región o sobre cualquier noticia. 🗞️</div>
     <div class="typing" id="typing">●●●</div>
   </div>
   <div class="chat-input-area">
@@ -200,193 +180,138 @@ footer .footer-marca{color:#777;margin-bottom:4px}
   </div>
   <div class="quick-actions">
     <button class="quick-btn" onclick="setInput('¿Qué pasa hoy en Caucasia?')">¿Qué pasa hoy?</button>
-    <button class="quick-btn" onclick="setInput('Cuéntame sobre la minería en El Bagre')">Minería</button>
-    <button class="quick-btn" onclick="setInput('Situación de seguridad en Tarazá')">Seguridad</button>
+    <button class="quick-btn" onclick="setInput('Minería en El Bagre')">Minería</button>
+    <button class="quick-btn" onclick="setInput('Seguridad en Tarazá')">Seguridad</button>
     <button class="quick-btn" onclick="setInput('Economía del Bajo Cauca')">Economía</button>
   </div>
 </div>
 
 <script>
-// ── CONSTANTES ──────────────────────────────────────────
-const API = "/.netlify/functions/claude";
-const INTERVALO_MS = 2 * 60 * 60 * 1000; // 2 horas
+const API_CLAUDE = "/.netlify/functions/claude";
+const API_NOTICIAS = "/.netlify/functions/noticias";
+const INTERVALO_MS = 2 * 60 * 60 * 1000;
 
 const CATEGORIAS = [
-  {id:"seguridad", label:"Seguridad", icon:"🛡️", color:"#e63946"},
-  {id:"economia",  label:"Economía",  icon:"💰", color:"#f4a261"},
-  {id:"comunidad", label:"Comunidad", icon:"🤝", color:"#2a9d8f"},
-  {id:"cultura",   label:"Cultura",   icon:"🎭", color:"#9b5de5"},
-  {id:"deportes",  label:"Deportes",  icon:"⚽", color:"#06d6a0"},
-  {id:"mineria",   label:"Minería",   icon:"⛏️", color:"#ffd166"},
+  {id:"seguridad",label:"Seguridad",icon:"🛡️",color:"#e63946"},
+  {id:"economia", label:"Economía", icon:"💰",color:"#f4a261"},
+  {id:"comunidad",label:"Comunidad",icon:"🤝",color:"#2a9d8f"},
+  {id:"cultura",  label:"Cultura",  icon:"🎭",color:"#9b5de5"},
+  {id:"deportes", label:"Deportes", icon:"⚽",color:"#06d6a0"},
+  {id:"mineria",  label:"Minería",  icon:"⛏️",color:"#ffd166"},
 ];
 
-const TICKER = [
-  "🔴 EN VIVO — Bajo Cauca Noticias · Tu región, tu verdad",
-  "⚡ Noticias generadas con Inteligencia Artificial en tiempo real",
-  "📢 Caucasia · El Bagre · Nechí · Tarazá · Cáceres · Zaragoza",
-  "🛢️ Precio del oro hoy: $280.000/gr · Petróleo WTI: $71.20/barril",
-  "🐟 Temporada de subienda en el río Cauca — Pesca artesanal activa",
-  "📻 Bajo Cauca Noticias · La voz del Nordeste Antioqueño",
+const TICKER_BASE = [
+  "🔴 Bajo Cauca Noticias · Tu región, tu verdad",
+  "📡 Noticias reales de medios colombianos resumidas con IA",
+  "🛢️ Precio del oro hoy · Bajo Cauca · Antioquia · Colombia",
+  "📻 Caucasia · El Bagre · Nechí · Tarazá · Cáceres · Zaragoza",
 ];
 
-const SYSTEM = `Eres el periodista digital de "Bajo Cauca Noticias", revista y telediario de la subregión Bajo Cauca, Antioquia, Colombia. Municipios: Caucasia, El Bagre, Nechí, Tarazá, Cáceres y Zaragoza. Responde en español colombiano, tono periodístico profesional y cercano. Experto en: seguridad, minería (oro, platino), ganadería, pesca, agricultura, gobierno local, cultura, economía y deportes regionales. Máximo 4 párrafos.`;
+const SYSTEM = `Eres periodista de "Bajo Cauca Noticias". Responde en español colombiano, tono periodístico cercano. Experto en la subregión Bajo Cauca de Antioquia: Caucasia, El Bagre, Nechí, Tarazá, Cáceres, Zaragoza. Temas: seguridad, minería, ganadería, pesca, gobierno local, cultura, economía, deportes. Máximo 4 párrafos.`;
 
-let noticias = [];
-let catActiva = "todo";
-let detalleN = null;
-let chatMsgs = [{role:"assistant",texto:"¡Hola! Soy el asistente de Bajo Cauca Noticias. Pregúntame sobre la región o pídeme que amplíe cualquier noticia. 🗞️"}];
-let cargando = false, escuchando = false, recognition = null;
-let proximaActualizacion = null;
-let timerContador = null;
+let noticias=[], catActiva="todo", detalleN=null;
+let chatMsgs=[{role:"assistant",texto:"¡Hola! Soy el asistente de Bajo Cauca Noticias. 🗞️"}];
+let cargando=false, escuchando=false, recognition=null;
+let proximaAct=null, timerCont=null;
 
 // ── RELOJ ────────────────────────────────────────────────
 function tick(){
   const c=new Date(new Date().toLocaleString("en-US",{timeZone:"America/Bogota"}));
-  document.getElementById("reloj").textContent=
-    `${c.getHours().toString().padStart(2,"0")}:${c.getMinutes().toString().padStart(2,"0")}:${c.getSeconds().toString().padStart(2,"0")} COL`;
-  const dias=["DOM","LUN","MAR","MIÉ","JUE","VIE","SÁB"],
-        mes=["ENE","FEB","MAR","ABR","MAY","JUN","JUL","AGO","SEP","OCT","NOV","DIC"];
-  document.getElementById("fecha-hoy").textContent=
-    `${dias[c.getDay()]} ${c.getDate()} ${mes[c.getMonth()]} ${c.getFullYear()}`;
+  document.getElementById("reloj").textContent=`${c.getHours().toString().padStart(2,"0")}:${c.getMinutes().toString().padStart(2,"0")}:${c.getSeconds().toString().padStart(2,"0")} COL`;
+  const dias=["DOM","LUN","MAR","MIÉ","JUE","VIE","SÁB"],mes=["ENE","FEB","MAR","ABR","MAY","JUN","JUL","AGO","SEP","OCT","NOV","DIC"];
+  document.getElementById("fecha-hoy").textContent=`${dias[c.getDay()]} ${c.getDate()} ${mes[c.getMonth()]} ${c.getFullYear()}`;
 }
-setInterval(tick,1000); tick();
+setInterval(tick,1000);tick();
 
 // ── TICKER ───────────────────────────────────────────────
 let ti=0;
-setInterval(()=>{
-  ti=(ti+1)%TICKER.length;
+function rotarTicker(){
+  const textos=[...TICKER_BASE,...noticias.slice(0,3).map(n=>`📰 ${n.titulo}`)];
+  ti=(ti+1)%textos.length;
   const el=document.getElementById("ticker");
   el.style.opacity="0";
-  setTimeout(()=>{el.textContent=TICKER[ti];el.style.opacity="1";},300);
-},5000);
-
-// ── HORA COLOMBIA ────────────────────────────────────────
-function horaCol(){
-  const c=new Date(new Date().toLocaleString("en-US",{timeZone:"America/Bogota"}));
-  return `${c.getHours().toString().padStart(2,"0")}:${c.getMinutes().toString().padStart(2,"0")}`;
+  setTimeout(()=>{el.textContent=textos[ti];el.style.opacity="1";},300);
 }
-function fechaCol(){
-  const c=new Date(new Date().toLocaleString("en-US",{timeZone:"America/Bogota"}));
-  const dias=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
-  const mes=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
-  return `${dias[c.getDay()]} ${c.getDate()} de ${mes[c.getMonth()]} de ${c.getFullYear()}`;
-}
+setInterval(rotarTicker,5000);
 
-// ── GENERAR NOTICIAS AUTOMÁTICAS ─────────────────────────
-async function generarNoticiasAuto(mostrarSplash=false) {
-  const estados = [
-    "🤖 Iniciando sala de redacción con IA…",
-    "📡 Consultando fuentes del Bajo Cauca…",
-    "✍️ Redactando noticias de Seguridad…",
-    "✍️ Redactando noticias de Economía…",
-    "✍️ Redactando noticias de Comunidad…",
-    "✍️ Redactando noticias de Cultura…",
-    "✍️ Redactando noticias de Deportes…",
-    "⛏️ Redactando noticias de Minería…",
-    "🗞️ Publicando edición del día…",
+// ── CARGAR NOTICIAS REALES ───────────────────────────────
+async function cargarNoticias(mostrarSplash=false){
+  const splashEl=document.getElementById("splash-estado");
+  const progEl=document.getElementById("splash-prog");
+
+  const estados=[
+    "📡 Conectando con El Colombiano, Caracol, El Tiempo…",
+    "🔍 Buscando noticias del Bajo Cauca…",
+    "🤖 IA resumiendo noticias encontradas…",
+    "✅ Preparando edición…"
   ];
+  let prog=0;
+  const timer=mostrarSplash?setInterval(()=>{
+    prog=Math.min(prog+25,90);
+    if(progEl)progEl.style.width=prog+"%";
+    const idx=Math.floor(prog/25);
+    if(splashEl&&estados[idx])splashEl.textContent=estados[idx];
+  },1200):null;
 
-  const splashEl = document.getElementById("splash-estado");
-  let ei = 0;
-  const estadoTimer = mostrarSplash ? setInterval(()=>{
-    if(ei < estados.length-1) ei++;
-    if(splashEl) splashEl.textContent = estados[ei];
-  }, 600) : null;
-
-  // Generar las 6 categorías en paralelo
-  const promesas = CATEGORIAS.map(async (cat) => {
-    try {
-      const fecha = fechaCol();
-      const r = await fetch(API, {
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body: JSON.stringify({
-          system: "Eres periodista del Bajo Cauca Antioqueño. Responde SOLO en JSON sin backticks ni explicaciones.",
-          messages:[{role:"user", content:
-            `Genera una noticia periodística verosímil y detallada sobre ${cat.label} en el Bajo Cauca Antioqueño (municipios: Caucasia, El Bagre, Nechí, Tarazá, Cáceres o Zaragoza) para el día ${fecha}. La noticia debe ser creíble, con nombres de lugares reales, datos plausibles y contexto regional. Responde SOLO en JSON: {"titulo":"...","resumen":"...","categoria":"${cat.id}"}`
-          }],
-          max_tokens: 600
-        })
-      });
-      const d = await r.json();
-      const raw = (d.content?.find(b=>b.type==="text")?.text||"{}").replace(/```json|```/g,"").trim();
-      const obj = JSON.parse(raw);
-      return {
-        id: Date.now() + Math.random(),
-        cat: obj.categoria || cat.id,
-        titulo: obj.titulo || `Noticias de ${cat.label} en el Bajo Cauca`,
-        resumen: obj.resumen || "",
-        hora: horaCol(),
-        nueva: true,
-        dest: false,
-      };
-    } catch(e) {
-      return null;
+  try{
+    const r=await fetch(API_NOTICIAS);
+    const d=await r.json();
+    if(d.noticias&&d.noticias.length>0){
+      noticias=[...d.noticias,...noticias].slice(0,30);
+      // Info bar
+      const infoEl=document.getElementById("info-bar");
+      if(infoEl){
+        const reales=d.reales||0;
+        const ia=d.total-reales;
+        infoEl.innerHTML=`📰 <strong>${reales}</strong> noticias de medios reales &nbsp;·&nbsp; 🤖 <strong>${ia}</strong> generadas con IA &nbsp;·&nbsp; Actualizado hace un momento`;
+      }
     }
-  });
-
-  const resultados = await Promise.all(promesas);
-  const validas = resultados.filter(Boolean);
-
-  if(estadoTimer) clearInterval(estadoTimer);
-
-  if(validas.length > 0){
-    // Marcar las anteriores como no nuevas
-    noticias = noticias.map(n=>({...n, nueva:false}));
-    // Agregar las nuevas al principio
-    noticias = [...validas, ...noticias].slice(0, 30); // máximo 30
-    renderNoticias();
-    // Actualizar ticker con titular de la primera
-    const primera = validas[0];
-    if(primera) document.getElementById("ticker").textContent = `🔴 ${primera.titulo}`;
+  }catch(e){
+    console.log("Error cargando noticias:",e.message);
   }
 
-  // Programar próxima actualización
-  proximaActualizacion = Date.now() + INTERVALO_MS;
+  if(timer)clearInterval(timer);
+  if(progEl)progEl.style.width="100%";
+
+  renderCats();
+  renderNoticias();
+
+  proximaAct=Date.now()+INTERVALO_MS;
   iniciarContador();
 
   if(mostrarSplash){
-    if(splashEl) splashEl.textContent = "✅ Edición lista — " + validas.length + " noticias generadas";
     setTimeout(()=>{
       document.getElementById("splash-carga").style.display="none";
-    }, 1000);
+    },800);
   }
 }
 
-// ── CONTADOR PRÓXIMA ACTUALIZACIÓN ───────────────────────
+// ── CONTADOR ─────────────────────────────────────────────
 function iniciarContador(){
-  if(timerContador) clearInterval(timerContador);
-  timerContador = setInterval(()=>{
-    const resto = proximaActualizacion - Date.now();
-    if(resto <= 0){
-      clearInterval(timerContador);
-      generarNoticiasAuto(false);
-      return;
-    }
-    const h = Math.floor(resto/3600000);
-    const m = Math.floor((resto%3600000)/60000);
-    const s = Math.floor((resto%60000)/1000);
-    const el = document.getElementById("contador-update");
-    if(el) el.textContent = `🔄 Próxima actualización automática en ${h>0?h+"h ":""}${m}m ${s}s`;
-  }, 1000);
+  if(timerCont)clearInterval(timerCont);
+  timerCont=setInterval(()=>{
+    const resto=proximaAct-Date.now();
+    if(resto<=0){clearInterval(timerCont);cargarNoticias(false);return;}
+    const h=Math.floor(resto/3600000),m=Math.floor((resto%3600000)/60000),s=Math.floor((resto%60000)/1000);
+    const el=document.getElementById("contador-update");
+    if(el)el.textContent=`🔄 Próxima actualización en ${h>0?h+"h ":""}${m}m ${s}s`;
+  },1000);
 }
 
 // ── CATEGORÍAS ───────────────────────────────────────────
 function renderCats(){
-  const todasCats = [{id:"todo",label:"Todo",icon:"🗞️",color:"#e63946"}, ...CATEGORIAS];
+  const all=[{id:"todo",label:"Todo",icon:"🗞️",color:"#e63946"},...CATEGORIAS];
   document.getElementById("categorias").innerHTML=
-    todasCats.map(c=>`<button class="cat-btn${catActiva===c.id?" activo":""}"
+    all.map(c=>`<button class="cat-btn${catActiva===c.id?" activo":""}"
       style="${catActiva===c.id?`background:${c.color};border-color:${c.color};`:""}"
       onclick="selCat('${c.id}')">${c.icon} ${c.label}</button>`).join("")+
-    `<button class="btn-generar" id="btn-gen" onclick="generarNoticiasAuto(false)" title="Actualizar ahora">🔄 Actualizar</button>`;
+    `<button class="btn-actualizar" id="btn-act" onclick="cargarNoticias(false)">🔄 Actualizar</button>`;
 }
 function selCat(id){catActiva=id;detalleN=null;renderCats();renderNoticias();}
-
-// ── HELPERS ──────────────────────────────────────────────
 const getCat=id=>CATEGORIAS.find(c=>c.id===id)||{icon:"📰",label:"General",color:"#e63946"};
 const esc=s=>(s||"").replace(/'/g,"\\'").replace(/"/g,"&quot;");
 
-// ── RENDER NOTICIAS ──────────────────────────────────────
+// ── RENDER ───────────────────────────────────────────────
 function renderNoticias(){
   const fil=catActiva==="todo"?noticias:noticias.filter(n=>n.cat===catActiva);
   const wDest=document.getElementById("destacada-wrap");
@@ -398,33 +323,28 @@ function renderNoticias(){
     wDet.className="visible";
     const cat=getCat(detalleN.cat);
     wDet.innerHTML=`<button class="btn-volver" onclick="cerrarDet()">← Volver</button>
-      <div class="cat-meta">${cat.icon} ${cat.label.toUpperCase()} · ${detalleN.hora}</div>
+      <div class="cat-meta">${cat.icon} ${cat.label.toUpperCase()} · ${detalleN.hora} ${detalleN.fuente?'· '+detalleN.fuente:''}</div>
       <h2>${detalleN.titulo}</h2><p>${detalleN.resumen}</p>
       <div class="detalle-acciones">
-        <button class="btn-escuchar" onclick="hablar('${esc(detalleN.titulo)}. ${esc(detalleN.resumen)}')">🔊 Escuchar noticia</button>
+        <button class="btn-escuchar" onclick="hablar('${esc(detalleN.titulo)}. ${esc(detalleN.resumen)}')">🔊 Escuchar</button>
         <button class="btn-preguntar" onclick="preguntarIA('${esc(detalleN.titulo)}')">🤖 Ampliar con IA</button>
+        ${detalleN.link?`<a class="btn-fuente" href="${detalleN.link}" target="_blank">🔗 Ver fuente original</a>`:""}
       </div>`;
     wDest.innerHTML="";
   } else {
-    wDet.className=""; wDet.innerHTML="";
+    wDet.className="";wDet.innerHTML="";
   }
 
-  // Skeleton si está cargando y no hay noticias
   if(noticias.length===0){
     wDest.innerHTML=`<div class="noticia-destacada" style="cursor:default">
       <div class="skeleton sk-badge" style="margin-bottom:10px"></div>
-      <div class="skeleton sk-title" style="margin-bottom:12px;height:28px;width:90%"></div>
+      <div class="skeleton" style="height:28px;width:90%;margin-bottom:12px;border-radius:4px"></div>
       <div class="skeleton sk-line" style="margin-bottom:8px"></div>
-      <div class="skeleton sk-line2"></div>
-    </div>`;
+      <div class="skeleton sk-line2"></div></div>`;
     wGrid.innerHTML=[1,2,3,4,5].map(()=>`<div class="skeleton-card">
-      <div class="skeleton sk-badge"></div>
-      <div class="skeleton sk-title"></div>
-      <div class="skeleton sk-line"></div>
-      <div class="skeleton sk-line2"></div>
-    </div>`).join("");
-    wEmpty.style.display="none";
-    return;
+      <div class="skeleton sk-badge"></div><div class="skeleton sk-title"></div>
+      <div class="skeleton sk-line"></div><div class="skeleton sk-line2"></div></div>`).join("");
+    wEmpty.style.display="none";return;
   }
 
   if(!fil.length){wDest.innerHTML="";wGrid.innerHTML="";wEmpty.style.display="block";return;}
@@ -433,31 +353,30 @@ function renderNoticias(){
   if(!detalleN){
     const n=fil[0],cat=getCat(n.cat);
     wDest.innerHTML=`<div class="noticia-destacada" onclick="abrirDet(${n.id})">
-      ${n.nueva?'<span class="badge nuevo">🔴 IA HOY</span>':'<span class="badge">⭐ DESTACADO</span>'}
+      <span class="badge ${n.real?'real':'ia'}">${n.real?'📰 FUENTE REAL':'🤖 IA'}</span>
       <div class="cat-meta">${cat.icon} ${cat.label.toUpperCase()} · ${n.hora}</div>
       <h2>${n.titulo}</h2><p>${n.resumen.slice(0,280)}${n.resumen.length>280?"…":""}</p>
+      ${n.fuente?`<div class="fuente-tag">Fuente: ${n.fuente}</div>`:""}
       <div class="leer-mas">Leer más → &nbsp;|&nbsp; 🔊 Escuchar</div></div>`;
   }
 
   const resto=detalleN?fil:fil.slice(1);
   wGrid.innerHTML=resto.map(n=>{
     const cat=getCat(n.cat);
-    return `<div class="card-noticia${n.nueva?" nueva":""}" onclick="abrirDet(${n.id})"
+    return `<div class="card-noticia" onclick="abrirDet(${n.id})"
       onmouseenter="this.style.borderColor='${cat.color}'"
-      onmouseleave="this.style.borderColor='${n.nueva?"#e63946":"#222"}'">
-      ${n.nueva?'<span class="badge-mini">IA HOY</span>':""}
+      onmouseleave="this.style.borderColor='#222'">
+      <span class="badge-mini ${n.real?'real':'ia'}">${n.real?'REAL':'IA'}</span>
       <div class="cat-meta" style="color:${cat.color}">${cat.icon} ${cat.label.toUpperCase()} · ${n.hora}</div>
-      <h3>${n.titulo}</h3><p>${n.resumen.slice(0,110)}…</p></div>`;
+      <h3>${n.titulo}</h3><p>${n.resumen.slice(0,110)}…</p>
+      ${n.fuente?`<div class="fuente-tag" style="margin-top:6px">📰 ${n.fuente}</div>`:""}
+    </div>`;
   }).join("");
 }
 
-function abrirDet(id){
-  detalleN=noticias.find(n=>String(n.id)===String(id)||n.id===id);
-  renderNoticias();window.scrollTo({top:0,behavior:"smooth"});
-}
+function abrirDet(id){detalleN=noticias.find(n=>n.id===id||String(n.id)===String(id));renderNoticias();window.scrollTo({top:0,behavior:"smooth"});}
 function cerrarDet(){detalleN=null;renderNoticias();}
 
-// ── VOZ SÍNTESIS ─────────────────────────────────────────
 function hablar(t){
   if(!window.speechSynthesis)return;
   window.speechSynthesis.cancel();
@@ -474,92 +393,65 @@ document.getElementById("btn-chat").addEventListener("click",()=>{
   document.getElementById("btn-chat").textContent=ab?"✕":"🎙️";
   document.getElementById("btn-chat").classList.toggle("cerrado",!ab);
 });
-document.getElementById("chat-input").addEventListener("input",function(){
-  document.getElementById("btn-send").disabled=!this.value.trim();
-});
-document.getElementById("chat-input").addEventListener("keydown",e=>{
-  if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();enviar();}
-});
+document.getElementById("chat-input").addEventListener("input",function(){document.getElementById("btn-send").disabled=!this.value.trim();});
+document.getElementById("chat-input").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();enviar();}});
 document.getElementById("btn-send").addEventListener("click",enviar);
 
-function setInput(t){
-  document.getElementById("chat-input").value=t;
-  document.getElementById("btn-send").disabled=false;
-  document.getElementById("chat-input").focus();
-}
+function setInput(t){document.getElementById("chat-input").value=t;document.getElementById("btn-send").disabled=false;document.getElementById("chat-input").focus();}
 function preguntarIA(titulo){
-  setInput(`Amplía esta noticia con más detalles y contexto: ${titulo}`);
+  setInput(`Amplía esta noticia con más detalles y contexto regional: ${titulo}`);
   document.getElementById("panel-chat").classList.add("visible");
   document.getElementById("btn-chat").textContent="✕";
   document.getElementById("btn-chat").classList.remove("cerrado");
 }
 
 function addMsg(role,texto){
-  const cont=document.getElementById("chat-mensajes");
-  const typ=document.getElementById("typing");
-  const d=document.createElement("div");
-  d.className=`msg ${role==="assistant"?"bot":"user"}`;
-  d.textContent=texto;
+  const cont=document.getElementById("chat-mensajes"),typ=document.getElementById("typing");
+  const d=document.createElement("div");d.className=`msg ${role==="assistant"?"bot":"user"}`;d.textContent=texto;
   cont.insertBefore(d,typ);
-  if(role==="assistant"){
-    const b=document.createElement("button");
-    b.className="msg-audio";b.textContent="🔊 Escuchar";
-    b.onclick=()=>hablar(texto);
-    cont.insertBefore(b,typ);
-  }
+  if(role==="assistant"){const b=document.createElement("button");b.className="msg-audio";b.textContent="🔊 Escuchar";b.onclick=()=>hablar(texto);cont.insertBefore(b,typ);}
   cont.scrollTop=cont.scrollHeight;
 }
 
 async function enviar(){
-  const inp=document.getElementById("chat-input");
-  const txt=inp.value.trim();
+  const inp=document.getElementById("chat-input"),txt=inp.value.trim();
   if(!txt||cargando)return;
-  chatMsgs.push({role:"user",texto:txt});
-  addMsg("user",txt);
-  inp.value="";document.getElementById("btn-send").disabled=true;
-  cargando=true;
+  chatMsgs.push({role:"user",texto:txt});addMsg("user",txt);
+  inp.value="";document.getElementById("btn-send").disabled=true;cargando=true;
   document.getElementById("typing").classList.add("visible");
   document.getElementById("chat-estado").textContent="⏳ Escribiendo…";
   try{
-    const r=await fetch(API,{method:"POST",headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({system:SYSTEM,messages:chatMsgs.map(m=>({role:m.role,content:m.texto})),max_tokens:1000})
-    });
+    const r=await fetch(API_CLAUDE,{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({system:SYSTEM,messages:chatMsgs.map(m=>({role:m.role,content:m.texto})),max_tokens:1000})});
     const d=await r.json();
     const resp=d.content?.find(b=>b.type==="text")?.text||"No pude procesar tu consulta.";
-    chatMsgs.push({role:"assistant",texto:resp});
-    addMsg("assistant",resp);
-    hablar(resp.slice(0,300));
-  }catch{addMsg("assistant","⚠️ Error de conexión. Intenta de nuevo.");}
+    chatMsgs.push({role:"assistant",texto:resp});addMsg("assistant",resp);hablar(resp.slice(0,300));
+  }catch{addMsg("assistant","⚠️ Error de conexión.");}
   document.getElementById("typing").classList.remove("visible");
   document.getElementById("chat-estado").textContent="🟢 En línea · IA Activa";
   cargando=false;
 }
 
-// ── RECONOCIMIENTO DE VOZ ────────────────────────────────
 document.getElementById("btn-mic").addEventListener("click",()=>{
   const R=window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(!R){alert("Usa Chrome para reconocimiento de voz.");return;}
+  if(!R){alert("Usa Chrome para voz.");return;}
   if(escuchando&&recognition){recognition.stop();return;}
   recognition=new R();recognition.lang="es-CO";recognition.interimResults=false;
   escuchando=true;document.getElementById("btn-mic").classList.add("escuchando");
-  document.getElementById("chat-input").placeholder="🎙️ Escuchando…";
   recognition.start();
-  recognition.onresult=e=>{
-    document.getElementById("chat-input").value=e.results[0][0].transcript;
-    document.getElementById("btn-send").disabled=false;fin();
-  };
+  recognition.onresult=e=>{document.getElementById("chat-input").value=e.results[0][0].transcript;document.getElementById("btn-send").disabled=false;fin();};
   recognition.onerror=recognition.onend=fin;
-  function fin(){escuchando=false;document.getElementById("btn-mic").classList.remove("escuchando");document.getElementById("chat-input").placeholder="Pregunta sobre el Bajo Cauca…";recognition=null;}
+  function fin(){escuchando=false;document.getElementById("btn-mic").classList.remove("escuchando");recognition=null;}
 });
 
-// ── PWA MANIFEST ─────────────────────────────────────────
-const mBlob=new Blob([JSON.stringify({name:"Bajo Cauca Noticias",short_name:"BCN",start_url:"/",display:"standalone",theme_color:"#e63946",background_color:"#0a0a0f",icons:[{src:"https://placehold.co/192x192/e63946/fff?text=BCN",sizes:"192x192",type:"image/png"},{src:"https://placehold.co/512x512/e63946/fff?text=BCN",sizes:"512x512",type:"image/png"}]})],{type:"application/json"});
-document.getElementById("manifest-link").href=URL.createObjectURL(mBlob);
+// ── MANIFEST ─────────────────────────────────────────────
+const mB=new Blob([JSON.stringify({name:"Bajo Cauca Noticias",short_name:"BCN",start_url:"/",display:"standalone",theme_color:"#e63946",background_color:"#0a0a0f"})],{type:"application/json"});
+document.getElementById("manifest-link").href=URL.createObjectURL(mB);
 
-// ── ARRANQUE ─────────────────────────────────────────────
+// ── INIT ─────────────────────────────────────────────────
 renderCats();
-renderNoticias(); // muestra skeletons
-generarNoticiasAuto(true); // genera las 6 noticias al abrir
+renderNoticias(); // skeletons
+cargarNoticias(true);
 </script>
 </body>
 </html>
