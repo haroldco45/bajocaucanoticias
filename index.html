@@ -214,6 +214,68 @@ footer .footer-marca{color:#777;margin-bottom:4px}
 .quiz-feedback.mal{background:#2b0d0d;border:1px solid #e63946;color:#e63946}
 .btn-siguiente-quiz{background:linear-gradient(135deg,#1a3a4a,#0d2535);border:1px solid #4fc3f7;color:#4fc3f7;padding:10px 20px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:700;margin-top:12px;font-family:Georgia,serif}
 
+
+/* ===== CLASIFICADOS ===== */
+.clas-container{max-width:960px;margin:0 auto;padding:0 16px}
+.clas-header{text-align:center;padding:24px 20px 16px;border-bottom:1px solid #2a1f0d;margin-bottom:20px}
+.clas-titulo{font-size:clamp(20px,4vw,30px);font-weight:900;color:#ff9f43;margin-bottom:6px}
+.clas-sub{font-size:13px;color:#888;line-height:1.5}
+
+.clas-filtros{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;margin-bottom:20px;flex-wrap:wrap}
+.clas-filtros::-webkit-scrollbar{display:none}
+.clas-filtro{background:transparent;border:1px solid #2a1f0d;color:#888;padding:6px 14px;border-radius:20px;cursor:pointer;font-size:12px;white-space:nowrap;transition:all .2s;font-family:Georgia,serif}
+.clas-filtro.activo{background:#2a1f0d;border-color:#ff9f43;color:#ff9f43;font-weight:700}
+
+.clas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px;margin-bottom:24px}
+.clas-card{background:#1a1200;border:1px solid #2a1f0d;border-radius:12px;padding:18px;cursor:pointer;transition:all .2s;position:relative;animation:slideIn .3s ease}
+.clas-card:hover{transform:translateY(-2px);border-color:#ff9f43;box-shadow:0 4px 20px rgba(255,159,67,.1)}
+.clas-card-cat{font-size:9px;font-weight:700;color:#ff9f43;font-family:monospace;letter-spacing:2px;margin-bottom:8px;text-transform:uppercase}
+.clas-card-titulo{font-size:15px;font-weight:700;color:#fff5e6;margin-bottom:6px;line-height:1.3}
+.clas-card-desc{font-size:12px;color:#8a7560;line-height:1.5;margin-bottom:10px}
+.clas-card-footer{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #2a1f0d;padding-top:10px;margin-top:4px}
+.clas-card-precio{font-size:14px;font-weight:700;color:#ff9f43}
+.clas-card-lugar{font-size:11px;color:#666;font-family:monospace}
+.clas-card-nuevo{position:absolute;top:10px;right:10px;background:#ff9f43;color:#000;font-size:8px;font-weight:700;padding:2px 7px;border-radius:4px;font-family:monospace}
+
+/* Modal publicar */
+.clas-modal{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:3000;display:flex;align-items:center;justify-content:center;padding:16px}
+.clas-modal-box{background:#111;border:1px solid #ff9f43;border-radius:16px;padding:24px;width:100%;max-width:440px;max-height:90vh;overflow-y:auto}
+.clas-modal-titulo{font-size:18px;font-weight:700;color:#ff9f43;margin-bottom:6px}
+.clas-modal-sub{font-size:12px;color:#777;margin-bottom:20px}
+.clas-campo{margin-bottom:14px}
+.clas-campo label{display:block;font-size:11px;color:#888;font-family:monospace;letter-spacing:1px;margin-bottom:5px;text-transform:uppercase}
+.clas-campo input,.clas-campo textarea,.clas-campo select{width:100%;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:8px;padding:10px 14px;color:var(--texto);font-size:13px;outline:none;font-family:Georgia,serif;transition:border .2s}
+.clas-campo input:focus,.clas-campo textarea:focus,.clas-campo select:focus{border-color:#ff9f43}
+.clas-campo textarea{resize:vertical;min-height:80px}
+.clas-campo select option{background:#1a1a1a}
+.btn-publicar{width:100%;background:linear-gradient(135deg,#ff9f43,#e67e22);border:none;color:#000;padding:12px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:Georgia,serif;margin-top:4px;transition:all .2s}
+.btn-publicar:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(255,159,67,.3)}
+.btn-cancelar{width:100%;background:transparent;border:1px solid #333;color:#666;padding:10px;border-radius:10px;font-size:13px;cursor:pointer;font-family:Georgia,serif;margin-top:8px}
+
+/* Detalle clasificado */
+.clas-detalle{background:#1a1200;border:1px solid #2a1f0d;border-radius:12px;padding:24px;margin-bottom:20px;animation:slideIn .3s ease}
+.clas-detalle h2{font-size:20px;font-weight:700;color:#fff5e6;margin-bottom:12px}
+.clas-detalle p{font-size:15px;color:#b0956a;line-height:1.7;margin-bottom:16px}
+.clas-detalle-meta{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:#666;font-family:monospace;margin-bottom:16px}
+.btn-wa-clasificado{display:inline-flex;align-items:center;gap:8px;background:#25d366;border:none;color:#fff;padding:12px 20px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;font-family:Georgia,serif}
+
+.clas-empty{text-align:center;padding:50px 20px;color:#555}
+.clas-empty-icon{font-size:48px;margin-bottom:12px}
+
+/* Banner publicar flotante */
+.btn-publicar-fab{
+  position:fixed;bottom:100px;left:24px;
+  background:linear-gradient(135deg,#ff9f43,#e67e22);
+  border:none;color:#000;
+  padding:12px 18px;border-radius:30px;
+  font-size:13px;font-weight:700;cursor:pointer;
+  box-shadow:0 4px 16px rgba(255,159,67,.4);
+  z-index:900;font-family:Georgia,serif;
+  transition:all .2s;display:none;
+}
+.btn-publicar-fab:hover{transform:translateY(-2px)}
+.btn-publicar-fab.visible{display:flex;align-items:center;gap:6px}
+
 </style>
 </head>
 <body>
@@ -364,6 +426,7 @@ const CATEGORIAS = [
   {id:"deportes", label:"Deportes", icon:"⚽",color:"#06d6a0"},
   {id:"mineria",  label:"Minería",  icon:"⛏️",color:"#ffd166"},
   {id:"democracia",label:"Democracia",icon:"🗳️",color:"#4fc3f7"},
+  {id:"clasificados",label:"Clasificados",icon:"🛍️",color:"#ff9f43"},
 ];
 
 const TICKER_BASE = [
@@ -473,7 +536,7 @@ function renderCats(){
       onclick="selCat('${c.id}')">${c.icon} ${c.label}</button>`).join("")+
     `<button class="btn-actualizar" id="btn-act" onclick="cargarNoticias(false)">🔄 Actualizar</button>`;
 }
-function selCat(id){catActiva=id;detalleN=null;renderCats();renderNoticias();renderDemocracia();}
+function selCat(id){catActiva=id;detalleN=null;renderCats();renderNoticias();renderDemocracia();renderClasificados();}
 const getCat=id=>CATEGORIAS.find(c=>c.id===id)||{icon:"📰",label:"General",color:"#e63946"};
 const esc=s=>(s||"").replace(/'/g,"\\'").replace(/"/g,"&quot;");
 
@@ -729,6 +792,8 @@ function renderDemocracia() {
 
   if(catActiva === "democracia") {
     panel.style.display = "block";
+    document.getElementById("panel-clasificados").style.display = "none";
+    document.getElementById("btn-pub-fab").classList.remove("visible");
     // Ocultar contenido de noticias
     document.querySelectorAll(".banner-container").forEach(b=>b.style.display="none");
     if(contadorEl) contadorEl.style.display="none";
@@ -858,10 +923,184 @@ function preguntarDemoIA(titulo) {
   document.getElementById("btn-chat").classList.remove("cerrado");
 }
 
+
+// ══════════════════════════════════════════════════════
+// MÓDULO CLASIFICADOS
+// ══════════════════════════════════════════════════════
+
+const CLAS_CATS = [
+  {id:"todos",    label:"Todos",         icon:"🛍️"},
+  {id:"compraventa",label:"Compra/Venta",icon:"🛒"},
+  {id:"servicios",  label:"Servicios",   icon:"🔧"},
+  {id:"inmuebles",  label:"Inmuebles",   icon:"🏠"},
+  {id:"vehiculos",  label:"Vehículos",   icon:"🚗"},
+  {id:"empleo",     label:"Empleo",      icon:"💼"},
+  {id:"agro",       label:"Agropecuario",icon:"🌾"},
+  {id:"otros",      label:"Otros",       icon:"📦"},
+];
+
+// Clasificados de ejemplo para arrancar
+let clasificados = [
+  {id:1, cat:"compraventa", titulo:"Vendo nevera Haceb 300L en buen estado", desc:"Nevera Haceb 300 litros, color blanco, funciona perfectamente. 3 años de uso, sin golpes. Se entrega en Caucasia.", precio:"$480.000", lugar:"Caucasia", nombre:"Doña Rosa", tel:"3115550001", fecha: new Date().toLocaleDateString("es-CO"), nueva:false},
+  {id:2, cat:"servicios", titulo:"Servicio de contabilidad y declaración de renta", desc:"Contador público titulado. Declaraciones de renta, contabilidad para PYMES, Regimen Simple. Atención a domicilio en todo el Bajo Cauca.", precio:"Desde $80.000", lugar:"Caucasia", nombre:"Hernán Díaz CPC", tel:"3104440002", fecha: new Date().toLocaleDateString("es-CO"), nueva:false},
+  {id:3, cat:"inmuebles", titulo:"Arriendo local comercial en el centro de Caucasia", desc:"Local de 40m², piso primer nivel, avenida principal. Apto para cualquier negocio. Baño incluido. Disponible inmediatamente.", precio:"$1.200.000/mes", lugar:"Caucasia", nombre:"Propietario directo", tel:"3123330003", fecha: new Date().toLocaleDateString("es-CO"), nueva:false},
+  {id:4, cat:"vehiculos", titulo:"Vendo moto Suzuki GN 125 modelo 2021", desc:"Moto en excelente estado, papeles al día, soat vigente, revisión técnica reciente. Un solo dueño. Negociable.", precio:"$4.200.000", lugar:"El Bagre", nombre:"Carlos M.", tel:"3132220004", fecha: new Date().toLocaleDateString("es-CO"), nueva:false},
+  {id:5, cat:"empleo", titulo:"Se busca auxiliar de bodega con experiencia", desc:"Distribuidora de alimentos busca auxiliar de bodega. Experiencia mínima 1 año. Horario L-S 7am-5pm. Salario + prestaciones.", precio:"Salario mínimo + prest.", lugar:"Caucasia", nombre:"RRHH Distribuidora", tel:"3201110005", fecha: new Date().toLocaleDateString("es-CO"), nueva:false},
+  {id:6, cat:"agro", titulo:"Vendo 50 sacos de arroz paddy seco", desc:"Producción propia, arroz paddy seco listo para molino. Calidad superior, humedad 14%. Precio por volumen. Finca en Nechí.", precio:"$85.000/saco", lugar:"Nechí", nombre:"Finca La Esperanza", tel:"3110000006", fecha: new Date().toLocaleDateString("es-CO"), nueva:false},
+];
+
+let clasCatActiva = "todos";
+let clasDetalle = null;
+
+function renderClasificados() {
+  const panel = document.getElementById("panel-clasificados");
+  const fab = document.getElementById("btn-pub-fab");
+
+  if(catActiva === "clasificados") {
+    panel.style.display = "block";
+    if(fab) fab.classList.add("visible");
+    document.querySelectorAll(".banner-container").forEach(b=>b.style.display="none");
+    const contEl = document.getElementById("contador-update");
+    if(contEl) contEl.style.display="none";
+    renderClasFiltros();
+    renderClasGrid();
+  } else {
+    panel.style.display = "none";
+    if(fab) fab.classList.remove("visible");
+    document.querySelectorAll(".banner-container").forEach(b=>b.style.display="");
+    const contEl = document.getElementById("contador-update");
+    if(contEl) contEl.style.display="";
+  }
+}
+
+function renderClasFiltros() {
+  document.getElementById("clas-filtros").innerHTML = CLAS_CATS.map(c =>
+    `<button class="clas-filtro${clasCatActiva===c.id?" activo":""}" onclick="selClasCat('${c.id}')">${c.icon} ${c.label}</button>`
+  ).join("");
+}
+
+function selClasCat(id) {
+  clasCatActiva = id;
+  clasDetalle = null;
+  renderClasFiltros();
+  renderClasGrid();
+}
+
+function renderClasGrid() {
+  const cont = document.getElementById("clas-contenido");
+  
+  if(clasDetalle) {
+    const n = clasDetalle;
+    const waMsg = encodeURIComponent(`Hola ${n.nombre}, vi tu clasificado en Bajo Cauca Noticias: "${n.titulo}". ¿Sigue disponible?`);
+    cont.innerHTML = `
+      <div class="clas-detalle">
+        <button class="btn-demo-volver" style="margin-bottom:16px" onclick="clasDetalle=null;renderClasGrid()">← Volver a clasificados</button>
+        <div class="clas-card-cat">${CLAS_CATS.find(c=>c.id===n.cat)?.icon||"📦"} ${CLAS_CATS.find(c=>c.id===n.cat)?.label||n.cat}</div>
+        <h2>${n.titulo}</h2>
+        <div class="clas-detalle-meta">
+          <span>📍 ${n.lugar}</span>
+          <span>👤 ${n.nombre}</span>
+          <span>📅 ${n.fecha}</span>
+          ${n.precio?`<span>💰 ${n.precio}</span>`:""}
+        </div>
+        <p>${n.desc}</p>
+        <a class="btn-wa-clasificado" href="https://wa.me/${n.tel.replace(/[^0-9]/g,"")}?text=${waMsg}" target="_blank">
+          <span>📲</span> Contactar por WhatsApp
+        </a>
+      </div>`;
+    return;
+  }
+
+  const fil = clasCatActiva === "todos" ? clasificados : clasificados.filter(c=>c.cat===clasCatActiva);
+
+  // Botón publicar arriba
+  const btnPublicar = `<button onclick="abrirModalClas()" style="width:100%;background:linear-gradient(135deg,#ff9f43,#e67e22);border:none;color:#000;padding:14px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:Georgia,serif;margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:8px">
+    <span>📢</span> Publicar tu aviso gratis aquí
+  </button>`;
+
+  if(!fil.length) {
+    cont.innerHTML = btnPublicar + `<div class="clas-empty"><div class="clas-empty-icon">📭</div><p>No hay clasificados en esta categoría aún.<br>¡Sé el primero en publicar!</p></div>`;
+    return;
+  }
+
+  cont.innerHTML = btnPublicar + `<div class="clas-grid">${fil.map(n => {
+    const cat = CLAS_CATS.find(c=>c.id===n.cat)||{icon:"📦",label:"Otros"};
+    return `<div class="clas-card" onclick="clasDetalle=clasificados.find(c=>c.id===${n.id});renderClasGrid()">
+      ${n.nueva?'<span class="clas-card-nuevo">NUEVO</span>':""}
+      <div class="clas-card-cat">${cat.icon} ${cat.label}</div>
+      <div class="clas-card-titulo">${n.titulo}</div>
+      <div class="clas-card-desc">${n.desc.slice(0,90)}…</div>
+      <div class="clas-card-footer">
+        <span class="clas-card-precio">${n.precio||"Consultar"}</span>
+        <span class="clas-card-lugar">📍 ${n.lugar}</span>
+      </div>
+    </div>`;
+  }).join("")}</div>`;
+}
+
+function abrirModalClas() {
+  document.getElementById("clas-modal").style.display = "flex";
+}
+
+function cerrarModalClas() {
+  document.getElementById("clas-modal").style.display = "none";
+  // Limpiar campos
+  ["cf-titulo","cf-desc","cf-precio","cf-nombre","cf-tel"].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.value = "";
+  });
+}
+
+function publicarClasificado() {
+  const titulo = document.getElementById("cf-titulo").value.trim();
+  const desc   = document.getElementById("cf-desc").value.trim();
+  const precio = document.getElementById("cf-precio").value.trim();
+  const lugar  = document.getElementById("cf-lugar").value;
+  const nombre = document.getElementById("cf-nombre").value.trim();
+  const tel    = document.getElementById("cf-tel").value.trim();
+  const cat    = document.getElementById("cf-cat").value;
+
+  if(!titulo || !desc || !nombre || !tel) {
+    alert("Por favor completa: título, descripción, nombre y WhatsApp.");
+    return;
+  }
+
+  const nuevo = {
+    id: Date.now(),
+    cat, titulo, desc, precio, lugar, nombre, tel,
+    fecha: new Date().toLocaleDateString("es-CO"),
+    nueva: true,
+  };
+
+  clasificados.unshift(nuevo);
+  cerrarModalClas();
+  clasCatActiva = "todos";
+  renderClasFiltros();
+  renderClasGrid();
+
+  // Mensaje WhatsApp de confirmación al publicar
+  const waAdmin = "573117700431";
+  const msg = encodeURIComponent(`📢 Nuevo clasificado en BCN:\n\n*${titulo}*\n📍 ${lugar} · 👤 ${nombre}\n💰 ${precio||"Sin precio"}\n\n${desc.slice(0,150)}`);
+  
+  // Mostrar confirmación
+  const cont = document.getElementById("clas-contenido");
+  cont.insertAdjacentHTML("afterbegin", `
+    <div style="background:#0d2b0d;border:1px solid #4caf50;border-radius:10px;padding:16px;margin-bottom:16px;text-align:center;animation:slideIn .3s ease">
+      <div style="font-size:28px;margin-bottom:8px">✅</div>
+      <div style="color:#4caf50;font-weight:700;margin-bottom:6px">¡Clasificado publicado!</div>
+      <div style="font-size:12px;color:#888;margin-bottom:12px">Tu aviso ya está visible para toda la comunidad del Bajo Cauca</div>
+      <a href="https://wa.me/${waAdmin}?text=${msg}" target="_blank" 
+        style="display:inline-flex;align-items:center;gap:6px;background:#25d366;color:#fff;padding:8px 16px;border-radius:8px;text-decoration:none;font-size:12px;font-weight:700">
+        📲 Enviar copia al administrador
+      </a>
+    </div>`);
+}
+
 // ── INIT ─────────────────────────────────────────────────
 renderCats();
-renderNoticias(); // skeletons
+renderNoticias();
 renderDemocracia();
+renderClasificados();
 cargarNoticias(true);
 </script>
 </body>
