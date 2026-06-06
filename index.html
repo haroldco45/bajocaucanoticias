@@ -487,11 +487,60 @@ function cerrarDet(){detalleN=null;renderNoticias();}
 function hablar(t){
   if(!window.speechSynthesis)return;
   window.speechSynthesis.cancel();
-  const u=new SpeechSynthesisUtterance(t.replace(/[^\w\s.,¿?¡!áéíóúüñÁÉÍÓÚÑ]/gu,""));
-  u.lang="es-CO";u.rate=0.95;
-  const v=window.speechSynthesis.getVoices().find(x=>x.lang.startsWith("es"));
-  if(v)u.voice=v;
-  window.speechSynthesis.speak(u);
+
+  // Limpiar texto
+  const texto = t.replace(/[^\w\s.,;:¿?¡!áéíóúüñÁÉÍÓÚÑ\n]/gu," ").replace(/\s+/g," ").trim();
+  if(!texto)return;
+
+  // Dividir en fragmentos por oraciones (máx 180 chars) para evitar cortes
+  const oraciones = texto.match(/[^.!?\n]+[.!?\n]*/g) || [texto];
+  const fragmentos = [];
+  let actual = "";
+  for(const o of oraciones){
+    if((actual + o).length > 180){
+      if(actual.trim()) fragmentos.push(actual.trim());
+      actual = o;
+    } else {
+      actual += o;
+    }
+  }
+  if(actual.trim()) fragmentos.push(actual.trim());
+
+  // Obtener voz española
+  let voz = null;
+  const voces = window.speechSynthesis.getVoices();
+  voz = voces.find(v=>v.lang==="es-CO") ||
+        voces.find(v=>v.lang==="es-MX") ||
+        voces.find(v=>v.lang==="es-ES") ||
+        voces.find(v=>v.lang.startsWith("es"));
+
+  // Encadenar fragmentos — cada uno arranca cuando termina el anterior
+  let idx = 0;
+  function leerSiguiente(){
+    if(idx >= fragmentos.length) return;
+    const u = new SpeechSynthesisUtterance(fragmentos[idx]);
+    u.lang = "es-CO";
+    u.rate = 0.92;
+    u.pitch = 1.0;
+    u.volume = 1.0;
+    if(voz) u.voice = voz;
+    u.onend = () => { idx++; leerSiguiente(); };
+    u.onerror = (e) => { if(e.error !== "interrupted"){ idx++; leerSiguiente(); } };
+    window.speechSynthesis.speak(u);
+  }
+
+  // Chrome bug: speechSynthesis se pausa solo — keepAlive cada 10s
+  const keepAlive = setInterval(()=>{
+    if(!window.speechSynthesis.speaking){ clearInterval(keepAlive); return; }
+    window.speechSynthesis.pause();
+    window.speechSynthesis.resume();
+  }, 10000);
+
+  leerSiguiente();
+}
+
+function detenerVoz(){
+  window.speechSynthesis.cancel();
 }
 
 // ── CHAT ─────────────────────────────────────────────────
@@ -532,7 +581,7 @@ async function enviar(){
       body:JSON.stringify({system:SYSTEM,messages:chatMsgs.map(m=>({role:m.role,content:m.texto})),max_tokens:1000})});
     const d=await r.json();
     const resp=d.content?.find(b=>b.type==="text")?.text||"No pude procesar tu consulta.";
-    chatMsgs.push({role:"assistant",texto:resp});addMsg("assistant",resp);hablar(resp.slice(0,300));
+    chatMsgs.push({role:"assistant",texto:resp});addMsg("assistant",resp);hablar(resp);
   }catch{addMsg("assistant","⚠️ Error de conexión.");}
   document.getElementById("typing").classList.remove("visible");
   document.getElementById("chat-estado").textContent="🟢 En línea · IA Activa";
