@@ -8,64 +8,71 @@ exports.handler = async (event) => {
     return { statusCode: 200, headers: { ...CORS, "Access-Control-Allow-Methods": "GET, OPTIONS" }, body: "" };
   }
 
-  // ── Fuentes RSS colombianas ──────────────────────────
+  // ── Fuentes RSS ──────────────────────────────────────
   const FUENTES = [
-    { nombre: "El Colombiano",  url: "https://www.elcolombiano.com/rss/feed.xml" },
-    { nombre: "Caracol Radio",  url: "https://caracol.com.co/rss/noticias.xml" },
-    { nombre: "El Tiempo",      url: "https://www.eltiempo.com/rss/colombia.xml" },
-    { nombre: "W Radio",        url: "https://www.wradio.com.co/rss/home.xml" },
-    { nombre: "RCN Radio",      url: "https://www.rcnradio.com/feed" },
+    // Antioquia / Regionales
+    { nombre: "Teleantioquia",   url: "https://www.teleantioquia.co/feed/" },
+    { nombre: "El Colombiano",   url: "https://www.elcolombiano.com/rss/feed.xml" },
+    { nombre: "El Mundo",        url: "https://www.elmundo.com/feed/" },
+    { nombre: "Minuto30",        url: "https://www.minuto30.com/feed/" },
+    { nombre: "Pulzo Antioquia", url: "https://www.pulzo.com/rss/antioquia.xml" },
+    // Nacionales con cobertura regional
+    { nombre: "Caracol Radio",   url: "https://caracol.com.co/rss/noticias.xml" },
+    { nombre: "RCN Radio",       url: "https://www.rcnradio.com/feed" },
+    { nombre: "El Tiempo",       url: "https://www.eltiempo.com/rss/colombia.xml" },
+    { nombre: "W Radio",         url: "https://www.wradio.com.co/rss/home.xml" },
+    { nombre: "Semana",          url: "https://www.semana.com/rss/nacion.xml" },
   ];
 
   // ── Palabras clave región ────────────────────────────
-  const KEYWORDS = [
-    "bajo cauca","caucasia","el bagre","nechí","tarazá","cáceres","zaragoza",
-    "antioquia","minería","oro","ganadería","río cauca","nordeste antioqueño",
-    "sucre","córdoba","urabá"
+  const KEYWORDS_EXACTAS = [
+    "bajo cauca","caucasia","el bagre","nechí","tarazá","cáceres","zaragoza antioquia",
+    "nordeste antioqueño","subregión bajo cauca",
+  ];
+  const KEYWORDS_AMPLIAS = [
+    "antioquia","medellín","minería","oro","ganadería","río cauca",
+    "grupos armados","disidencias farc","clan del golfo","eln antioquia",
+    "pesca artesanal","desplazamiento antioquia","coca antioquia",
   ];
 
   // ── Fetch + parse RSS ────────────────────────────────
-  async function fetchRSS(url) {
+  async function fetchRSS(fuente) {
     try {
-      const r = await fetch(url, {
-        headers: { "User-Agent": "Mozilla/5.0 BajoCaucaNoticias/1.0" },
-        signal: AbortSignal.timeout(5000),
+      const r = await fetch(fuente.url, {
+        headers: { "User-Agent": "Mozilla/5.0 BajoCaucaNoticias/2.0" },
+        signal: AbortSignal.timeout(6000),
       });
       if (!r.ok) return [];
       const xml = await r.text();
-
-      // Parser RSS manual (sin librerías)
       const items = [];
       const itemRegex = /<item[^>]*>([\s\S]*?)<\/item>/gi;
       let match;
       while ((match = itemRegex.exec(xml)) !== null) {
-        const block = match[1];
+        const b = match[1];
         const get = (tag) => {
-          const m = block.match(new RegExp(`<${tag}[^>]*><!\\[CDATA\\[([\\s\\S]*?)\\]\\]><\\/${tag}>`, "i"))
-            || block.match(new RegExp(`<${tag}[^>]*>([\\s\\S]*?)<\\/${tag}>`, "i"));
-          return m ? m[1].trim().replace(/<[^>]+>/g, "") : "";
+          const m = b.match(new RegExp(`<${tag}[^>]*><!\\[CDATA\\[([\\s\\S]*?)\\]\\]><\\/${tag}>`, "i"))
+            || b.match(new RegExp(`<${tag}[^>]*>([\\s\\S]*?)<\\/${tag}>`, "i"));
+          return m ? m[1].trim().replace(/<[^>]+>/g, "").replace(/&amp;/g,"&").replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&quot;/g,'"') : "";
         };
-        items.push({
-          titulo: get("title"),
-          descripcion: get("description"),
-          link: get("link"),
-          fecha: get("pubDate"),
-        });
+        items.push({ titulo: get("title"), descripcion: get("description"), link: get("link"), fecha: get("pubDate"), fuente: fuente.nombre });
       }
       return items;
-    } catch {
+    } catch(e) {
+      console.log(`Error RSS ${fuente.nombre}: ${e.message}`);
       return [];
     }
   }
 
-  // ── Filtrar por región ───────────────────────────────
-  function esRegional(item) {
+  // ── Clasificar relevancia ────────────────────────────
+  function relevancia(item) {
     const texto = `${item.titulo} ${item.descripcion}`.toLowerCase();
-    return KEYWORDS.some(k => texto.includes(k));
+    if (KEYWORDS_EXACTAS.some(k => texto.includes(k))) return "alta";
+    if (KEYWORDS_AMPLIAS.some(k => texto.includes(k))) return "media";
+    return "baja";
   }
 
   // ── Resumir con IA ───────────────────────────────────
-  async function resumir(item, fuente) {
+  async function resumir(item) {
     try {
       const r = await fetch("https://api.anthropic.com/v1/messages", {
         method: "POST",
@@ -76,110 +83,108 @@ exports.handler = async (event) => {
         },
         body: JSON.stringify({
           model: "claude-sonnet-4-5",
-          max_tokens: 400,
+          max_tokens: 450,
           messages: [{
             role: "user",
-            content: `Eres periodista del Bajo Cauca Antioqueño. Resume esta noticia de forma clara y concisa en máximo 3 párrafos en español colombiano. Mantén los datos importantes (cifras, nombres, lugares). Responde SOLO en JSON sin backticks: {"titulo":"...","resumen":"...","categoria":"seguridad|economia|comunidad|cultura|deportes|mineria"}
+            content: `Eres periodista de "Bajo Cauca Noticias", Antioquia, Colombia. Resume esta noticia en máximo 3 párrafos claros en español colombiano. Conserva cifras, nombres y datos clave. Si es de Antioquia pero no del Bajo Cauca, resálta la relevancia para la subregión Bajo Cauca al final. Responde SOLO en JSON sin backticks: {"titulo":"...","resumen":"...","categoria":"seguridad|economia|comunidad|cultura|deportes|mineria"}
 
-Noticia original:
 Título: ${item.titulo}
 Descripción: ${item.descripcion}
-Fuente: ${fuente}`
+Fuente: ${item.fuente}`
           }],
         }),
       });
       const d = await r.json();
       const raw = (d.content?.find(b => b.type === "text")?.text || "{}").replace(/```json|```/g, "").trim();
       const obj = JSON.parse(raw);
+      const hora = new Date().toLocaleString("en-US", { timeZone: "America/Bogota", hour: "2-digit", minute: "2-digit", hour12: false });
       return {
         id: Date.now() + Math.random(),
         cat: obj.categoria || "comunidad",
         titulo: obj.titulo || item.titulo,
         resumen: obj.resumen || item.descripcion,
         link: item.link,
-        fuente,
-        hora: new Date().toLocaleString("en-US", { timeZone: "America/Bogota", hour: "2-digit", minute: "2-digit", hour12: false }),
+        fuente: item.fuente,
+        hora,
         nueva: true,
         real: true,
+        relevancia: relevancia(item),
       };
-    } catch {
-      return null;
-    }
+    } catch { return null; }
   }
 
-  // ── Main ─────────────────────────────────────────────
+  // ── Generar con IA ───────────────────────────────────
+  async function generarIA(cat) {
+    try {
+      const fecha = new Date().toLocaleString("es-CO", { timeZone: "America/Bogota", dateStyle: "full" });
+      const r = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": process.env.ANTHROPIC_API_KEY,
+          "anthropic-version": "2023-06-01",
+        },
+        body: JSON.stringify({
+          model: "claude-sonnet-4-5",
+          max_tokens: 500,
+          messages: [{
+            role: "user",
+            content: `Genera una noticia periodística verosímil sobre ${cat} en el Bajo Cauca Antioqueño (Caucasia, El Bagre, Nechí, Tarazá, Cáceres o Zaragoza) para el ${fecha}. Con datos plausibles, nombres de lugares reales y contexto regional. SOLO JSON sin backticks: {"titulo":"...","resumen":"...","categoria":"${cat}"}`
+          }],
+        }),
+      });
+      const d = await r.json();
+      const raw = (d.content?.find(b => b.type === "text")?.text || "{}").replace(/```json|```/g, "").trim();
+      const obj = JSON.parse(raw);
+      const hora = new Date().toLocaleString("en-US", { timeZone: "America/Bogota", hour: "2-digit", minute: "2-digit", hour12: false });
+      return { id: Date.now()+Math.random(), cat, titulo: obj.titulo, resumen: obj.resumen, fuente: "IA Generativa", hora, nueva: true, real: false };
+    } catch { return null; }
+  }
+
+  // ── MAIN ─────────────────────────────────────────────
   try {
-    // Traer todos los RSS en paralelo
-    const todosItems = await Promise.all(
-      FUENTES.map(async f => {
-        const items = await fetchRSS(f.url);
-        return items.map(i => ({ ...i, fuente: f.nombre }));
-      })
-    );
+    // 1. Traer todos los RSS en paralelo
+    const todos = await Promise.all(FUENTES.map(fetchRSS));
+    const planos = todos.flat();
+    console.log(`Total artículos RSS: ${planos.length}`);
 
-    // Aplanar y filtrar
-    const planos = todosItems.flat();
-    const regionales = planos.filter(esRegional).slice(0, 8); // máx 8
+    // 2. Clasificar y ordenar por relevancia
+    const alta = planos.filter(i => relevancia(i) === "alta").slice(0, 5);
+    const media = planos.filter(i => relevancia(i) === "media").slice(0, 5);
+    const seleccionados = [...alta, ...media].slice(0, 8);
+    console.log(`Alta relevancia: ${alta.length}, Media: ${media.length}, Seleccionados: ${seleccionados.length}`);
 
-    console.log(`Total RSS: ${planos.length}, Regionales: ${regionales.length}`);
-
+    // 3. Resumir con IA
     let noticias = [];
-
-    if (regionales.length > 0) {
-      // Resumir con IA en paralelo
-      const resumidas = await Promise.all(
-        regionales.map(item => resumir(item, item.fuente))
-      );
+    if (seleccionados.length > 0) {
+      const resumidas = await Promise.all(seleccionados.map(resumir));
       noticias = resumidas.filter(Boolean);
     }
 
-    // Si no hay noticias reales suficientes, completar con IA generativa
-    if (noticias.length < 3) {
-      console.log("Pocas noticias reales, completando con IA generativa...");
-      const CATS = ["seguridad","economia","comunidad","mineria","deportes","cultura"];
-      const faltantes = CATS.slice(0, 6 - noticias.length);
-      const fecha = new Date().toLocaleString("es-CO", { timeZone: "America/Bogota", dateStyle: "full" });
+    // 4. Completar con IA generativa si faltan
+    const CATS = ["seguridad","economia","comunidad","mineria","deportes","cultura"];
+    const catsUsadas = new Set(noticias.map(n => n.cat));
+    const catsFaltantes = CATS.filter(c => !catsUsadas.has(c)).slice(0, Math.max(0, 6 - noticias.length));
 
-      const generadas = await Promise.all(faltantes.map(async cat => {
-        try {
-          const r = await fetch("https://api.anthropic.com/v1/messages", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "x-api-key": process.env.ANTHROPIC_API_KEY,
-              "anthropic-version": "2023-06-01",
-            },
-            body: JSON.stringify({
-              model: "claude-sonnet-4-5",
-              max_tokens: 500,
-              messages: [{
-                role: "user",
-                content: `Genera una noticia verosímil sobre ${cat} en el Bajo Cauca Antioqueño para el ${fecha}. SOLO JSON sin backticks: {"titulo":"...","resumen":"...","categoria":"${cat}"}`
-              }],
-            }),
-          });
-          const d = await r.json();
-          const raw = (d.content?.find(b => b.type === "text")?.text || "{}").replace(/```json|```/g, "").trim();
-          const obj = JSON.parse(raw);
-          return {
-            id: Date.now() + Math.random(),
-            cat, titulo: obj.titulo, resumen: obj.resumen,
-            fuente: "IA Generativa",
-            hora: new Date().toLocaleString("en-US", { timeZone: "America/Bogota", hour: "2-digit", minute: "2-digit", hour12: false }),
-            nueva: true, real: false,
-          };
-        } catch { return null; }
-      }));
+    if (catsFaltantes.length > 0) {
+      console.log(`Completando con IA: ${catsFaltantes.join(", ")}`);
+      const generadas = await Promise.all(catsFaltantes.map(generarIA));
       noticias = [...noticias, ...generadas.filter(Boolean)];
     }
 
     return {
       statusCode: 200,
       headers: CORS,
-      body: JSON.stringify({ noticias, total: noticias.length, reales: noticias.filter(n=>n.real).length }),
+      body: JSON.stringify({
+        noticias,
+        total: noticias.length,
+        reales: noticias.filter(n => n.real).length,
+        alta: alta.length,
+        media: media.length,
+      }),
     };
   } catch (err) {
-    console.log("Error:", err.message);
-    return { statusCode: 500, headers: CORS, body: JSON.stringify({ error: err.message }) };
+    console.log("Error general:", err.message);
+    return { statusCode: 500, headers: CORS, body: JSON.stringify({ error: err.message, noticias: [] }) };
   }
 };
