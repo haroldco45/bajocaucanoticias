@@ -20,7 +20,7 @@ exports.handler = async (event) => {
 
     // Construir payload limpio
     const payload = {
-      model: "claude-sonnet-4-20250514",
+      model: "claude-sonnet-4-5",
       max_tokens: body.max_tokens || 1000,
       messages: body.messages || [],
     };
