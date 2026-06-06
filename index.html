@@ -169,6 +169,51 @@ footer .footer-marca{color:#777;margin-bottom:4px}
 /* Pulsing badge */
 .banner-badge{position:absolute;top:8px;right:8px;background:#e63946;color:#fff;font-size:8px;font-weight:700;padding:2px 6px;border-radius:4px;font-family:monospace;letter-spacing:1px;animation:pulse 2s infinite}
 
+
+/* ===== SECCIÓN DEMOCRACIA ===== */
+.demo-container{max-width:960px;margin:0 auto;padding:0 16px}
+.demo-header{text-align:center;padding:28px 20px 20px;border-bottom:1px solid #1a3a4a;margin-bottom:24px}
+.demo-titulo{font-size:clamp(20px,4vw,32px);font-weight:900;color:#4fc3f7;margin-bottom:8px}
+.demo-sub{font-size:14px;color:#888;line-height:1.5}
+
+.demo-tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;margin-bottom:24px}
+.demo-tabs::-webkit-scrollbar{display:none}
+.demo-tab{background:transparent;border:1px solid #1a3a4a;color:#888;padding:8px 16px;border-radius:20px;cursor:pointer;font-size:12px;white-space:nowrap;transition:all .2s;font-family:Georgia,serif;flex-shrink:0}
+.demo-tab.activo{background:#1a3a4a;border-color:#4fc3f7;color:#4fc3f7;font-weight:700}
+
+.demo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-bottom:24px}
+.demo-card{background:#0d1f2d;border:1px solid #1a3a4a;border-radius:12px;padding:20px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.demo-card:hover{transform:translateY(-2px);border-color:#4fc3f7;box-shadow:0 4px 20px rgba(79,195,247,.15)}
+.demo-card::before{content:'';position:absolute;top:0;right:0;width:80px;height:80px;background:radial-gradient(circle at top right,rgba(79,195,247,.1),transparent);pointer-events:none}
+.demo-card-icon{font-size:32px;margin-bottom:10px}
+.demo-card-titulo{font-size:15px;font-weight:700;color:#e0f4ff;margin-bottom:6px;line-height:1.3}
+.demo-card-desc{font-size:12px;color:#6a9ab0;line-height:1.5}
+.demo-card-badge{display:inline-block;background:#1a3a4a;color:#4fc3f7;font-size:9px;font-weight:700;padding:2px 8px;border-radius:10px;font-family:monospace;letter-spacing:1px;margin-bottom:8px}
+
+.demo-detalle{background:#0d1f2d;border:1px solid #1a3a4a;border-radius:12px;padding:24px;margin-bottom:24px;animation:slideIn .3s ease}
+.demo-detalle h2{font-size:22px;font-weight:700;color:#4fc3f7;margin-bottom:16px;line-height:1.3}
+.demo-detalle-body{font-size:15px;color:#ccc;line-height:1.8;white-space:pre-wrap}
+.demo-detalle-acciones{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.btn-demo-escuchar{background:#1a3a4a;border:1px solid #4fc3f7;color:#4fc3f7;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:700;font-family:Georgia,serif}
+.btn-demo-volver{background:transparent;border:1px solid #333;color:#888;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:13px;font-family:Georgia,serif}
+.btn-demo-ia{background:linear-gradient(135deg,#1a3a4a,#0d2535);border:1px solid #4fc3f7;color:#4fc3f7;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:13px;font-family:Georgia,serif}
+
+.demo-cargando{text-align:center;padding:40px;color:#4fc3f7;font-family:monospace}
+.demo-spinner{font-size:32px;animation:pulse 1s infinite;margin-bottom:12px}
+
+/* Quiz */
+.quiz-box{background:#0d1f2d;border:1px solid #4fc3f7;border-radius:12px;padding:24px;margin-bottom:16px;animation:slideIn .3s ease}
+.quiz-pregunta{font-size:16px;font-weight:700;color:#e0f4ff;margin-bottom:16px;line-height:1.4}
+.quiz-opciones{display:flex;flex-direction:column;gap:8px}
+.quiz-opcion{background:transparent;border:1px solid #1a3a4a;color:#aaa;padding:12px 16px;border-radius:8px;cursor:pointer;font-size:13px;text-align:left;transition:all .2s;font-family:Georgia,serif}
+.quiz-opcion:hover{border-color:#4fc3f7;color:#4fc3f7;background:#0d1f2d}
+.quiz-opcion.correcta{background:#0d2b0d;border-color:#4caf50;color:#4caf50}
+.quiz-opcion.incorrecta{background:#2b0d0d;border-color:#e63946;color:#e63946}
+.quiz-feedback{padding:12px 16px;border-radius:8px;font-size:13px;margin-top:12px;line-height:1.5}
+.quiz-feedback.ok{background:#0d2b0d;border:1px solid #4caf50;color:#4caf50}
+.quiz-feedback.mal{background:#2b0d0d;border:1px solid #e63946;color:#e63946}
+.btn-siguiente-quiz{background:linear-gradient(135deg,#1a3a4a,#0d2535);border:1px solid #4fc3f7;color:#4fc3f7;padding:10px 20px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:700;margin-top:12px;font-family:Georgia,serif}
+
 </style>
 </head>
 <body>
@@ -203,7 +248,20 @@ footer .footer-marca{color:#777;margin-bottom:4px}
 <main>
   <div id="info-bar"></div>
   
-<!-- ===== BANNER TOP - DISTRILECO ===== -->
+
+<!-- ===== SECCIÓN DEMOCRACIA ===== -->
+<div id="panel-democracia" style="display:none">
+  <div class="demo-container">
+    <div class="demo-header">
+      <div class="demo-titulo">🗳️ Educación Democrática</div>
+      <div class="demo-sub">Conoce tus derechos, entiende el Estado y participa activamente<br>en la democracia colombiana desde el Bajo Cauca</div>
+    </div>
+    <div class="demo-tabs" id="demo-tabs"></div>
+    <div id="demo-contenido"></div>
+  </div>
+</div>
+
+  <!-- ===== BANNER TOP - DISTRILECO ===== -->
 <div class="banner-container" style="padding-top:4px">
   <div class="banner-label">Publicidad</div>
   <a class="banner-horizontal banner-distrileco" href="https://www.distrileco.com" target="_blank" rel="noopener" onclick="gtag&&gtag('event','click',{event_category:'banner',event_label:'distrileco-top'})">
@@ -305,6 +363,7 @@ const CATEGORIAS = [
   {id:"cultura",  label:"Cultura",  icon:"🎭",color:"#9b5de5"},
   {id:"deportes", label:"Deportes", icon:"⚽",color:"#06d6a0"},
   {id:"mineria",  label:"Minería",  icon:"⛏️",color:"#ffd166"},
+  {id:"democracia",label:"Democracia",icon:"🗳️",color:"#4fc3f7"},
 ];
 
 const TICKER_BASE = [
@@ -414,7 +473,7 @@ function renderCats(){
       onclick="selCat('${c.id}')">${c.icon} ${c.label}</button>`).join("")+
     `<button class="btn-actualizar" id="btn-act" onclick="cargarNoticias(false)">🔄 Actualizar</button>`;
 }
-function selCat(id){catActiva=id;detalleN=null;renderCats();renderNoticias();}
+function selCat(id){catActiva=id;detalleN=null;renderCats();renderNoticias();renderDemocracia();}
 const getCat=id=>CATEGORIAS.find(c=>c.id===id)||{icon:"📰",label:"General",color:"#e63946"};
 const esc=s=>(s||"").replace(/'/g,"\\'").replace(/"/g,"&quot;");
 
@@ -604,9 +663,205 @@ document.getElementById("btn-mic").addEventListener("click",()=>{
 const mB=new Blob([JSON.stringify({name:"Bajo Cauca Noticias",short_name:"BCN",start_url:"/",display:"standalone",theme_color:"#e63946",background_color:"#0a0a0f"})],{type:"application/json"});
 document.getElementById("manifest-link").href=URL.createObjectURL(mB);
 
+
+// ══════════════════════════════════════════════════════
+// MÓDULO DEMOCRACIA
+// ══════════════════════════════════════════════════════
+
+const DEMO_TEMAS = [
+  {
+    id:"democracia-colombiana",
+    icon:"🏛️",
+    label:"Democracia Colombiana",
+    badge:"FUNDAMENTOS",
+    desc:"Cómo funciona el sistema democrático en Colombia",
+    prompt:"Explica de forma clara y didáctica cómo funciona la democracia colombiana, enfocándote en aspectos relevantes para ciudadanos del Bajo Cauca Antioqueño. Incluye: qué es la democracia participativa, las ramas del poder público, cómo se toman las decisiones que afectan la región, y por qué es importante la participación ciudadana. Usa ejemplos concretos del Bajo Cauca. Escribe en español colombiano accesible para jóvenes y adultos."
+  },
+  {
+    id:"derechos-deberes",
+    icon:"📜",
+    label:"Derechos y Deberes",
+    badge:"CONSTITUCIÓN",
+    desc:"Tus derechos fundamentales y deberes como ciudadano",
+    prompt:"Explica de forma práctica y accesible los principales derechos y deberes ciudadanos en Colombia según la Constitución de 1991, con ejemplos aplicados a la vida cotidiana en el Bajo Cauca Antioqueño. Incluye: derechos fundamentales más importantes, cómo ejercerlos, mecanismos de protección (tutela, derecho de petición), y deberes ciudadanos. Usa lenguaje sencillo para jóvenes y adultos de la región."
+  },
+  {
+    id:"como-votar",
+    icon:"🗳️",
+    label:"Cómo Votar y Participar",
+    badge:"PARTICIPACIÓN",
+    desc:"Guía práctica para votar y participar en democracia",
+    prompt:"Explica paso a paso cómo votar en Colombia y todas las formas de participación ciudadana disponibles, con enfoque en el Bajo Cauca Antioqueño. Incluye: cómo inscribirse para votar, el proceso el día de las elecciones, tipos de elecciones (presidente, gobernador, alcalde, concejo, JAC), mecanismos de participación (cabildo abierto, consulta popular, iniciativa legislativa), y cómo participar en las JAC del Bajo Cauca. Lenguaje claro y práctico."
+  },
+  {
+    id:"instituciones",
+    icon:"⚖️",
+    label:"Instituciones del Estado",
+    badge:"ESTADO",
+    desc:"Las instituciones que gobiernan Colombia y tu región",
+    prompt:"Explica las principales instituciones del Estado colombiano y cómo funcionan a nivel local en el Bajo Cauca Antioqueño. Incluye: las tres ramas del poder (ejecutivo, legislativo, judicial), organismos de control (Procuraduría, Contraloría, Defensoría), instituciones locales (alcaldía, concejo municipal, personería), y entidades relevantes para el Bajo Cauca (CORNARE, Gobernación de Antioquia, Ejército, Policía). Explica qué hace cada una y cómo un ciudadano puede acceder a ellas."
+  },
+];
+
+// Quiz preguntas
+const QUIZ_PREGUNTAS = [
+  {p:"¿Cuántas ramas tiene el poder público en Colombia?", ops:["2","3","4","5"], r:1, exp:"Colombia tiene 3 ramas: Ejecutiva (Presidente, gobernadores, alcaldes), Legislativa (Congreso) y Judicial (Cortes y jueces)."},
+  {p:"¿Qué mecanismo usas para proteger un derecho fundamental vulnerado?", ops:["Derecho de petición","La tutela","El referendo","El cabildo abierto"], r:1, exp:"La tutela es la acción constitucional para proteger derechos fundamentales. Se puede presentar ante cualquier juez y debe resolverse en 10 días."},
+  {p:"¿Cada cuántos años se eligen los alcaldes en Colombia?", ops:["2 años","3 años","4 años","5 años"], r:2, exp:"Los alcaldes se eligen cada 4 años. En el Bajo Cauca, los alcaldes de Caucasia, El Bagre, Nechí, Tarazá, Cáceres y Zaragoza son elegidos por voto popular."},
+  {p:"¿Qué es una JAC?", ops:["Junta de Acción Comunal","Juzgado de Asuntos Civiles","Junta de Autoridades Cantonales","Jefatura de Asuntos Criminales"], r:0, exp:"La Junta de Acción Comunal (JAC) es una organización cívica que representa a los vecinos de un barrio o vereda. Son clave en el Bajo Cauca para gestionar proyectos comunitarios."},
+  {p:"¿Cuál es la Constitución vigente en Colombia?", ops:["La de 1886","La de 1948","La de 1991","La de 2003"], r:2, exp:"La Constitución Política de 1991 es la carta magna vigente. Fue promulgada el 4 de julio de 1991 y reconoce a Colombia como un Estado Social de Derecho."},
+  {p:"¿Qué organismo defiende los derechos humanos en Colombia?", ops:["La Contraloría","La Procuraduría","La Defensoría del Pueblo","El Ministerio del Interior"], r:2, exp:"La Defensoría del Pueblo defiende los derechos humanos. En el Bajo Cauca tiene oficinas regionales a las que puedes acudir gratuitamente."},
+  {p:"¿A qué edad puedes votar en Colombia?", ops:["16 años","17 años","18 años","21 años"], r:2, exp:"En Colombia puedes votar a partir de los 18 años. Debes tener cédula de ciudadanía y estar inscrito en el censo electoral."},
+  {p:"¿Qué es el cabildo abierto?", ops:["Una reunión del concejo municipal","Una audiencia pública donde participa la comunidad","Un tipo de votación","Una ley municipal"], r:1, exp:"El cabildo abierto es una audiencia pública obligatoria donde la comunidad puede discutir asuntos de interés local con las autoridades del concejo o la alcaldía."},
+];
+
+let demoTabActivo = "democracia-colombiana";
+let demoDetalle = null;
+let quizIdx = 0, quizRespondida = false;
+
+function renderDemocracia() {
+  const panel = document.getElementById("panel-democracia");
+  const main = document.getElementById("destacada-wrap");
+  const grid = document.getElementById("grid");
+  const empty = document.getElementById("empty");
+  const bannerTop = document.querySelector(".banner-container");
+  const contadorEl = document.getElementById("contador-update");
+
+  if(catActiva === "democracia") {
+    panel.style.display = "block";
+    // Ocultar contenido de noticias
+    document.querySelectorAll(".banner-container").forEach(b=>b.style.display="none");
+    if(contadorEl) contadorEl.style.display="none";
+    renderDemoTabs();
+    renderDemoContenido();
+  } else {
+    panel.style.display = "none";
+    document.querySelectorAll(".banner-container").forEach(b=>b.style.display="");
+    if(contadorEl) contadorEl.style.display="";
+  }
+}
+
+function renderDemoTabs() {
+  const tabs = document.getElementById("demo-tabs");
+  const todosTemas = [...DEMO_TEMAS, {id:"quiz", icon:"🧠", label:"Quiz Cívico", badge:"INTERACTIVO", desc:""}];
+  tabs.innerHTML = todosTemas.map(t =>
+    `<button class="demo-tab${demoTabActivo===t.id?" activo":""}" onclick="selDemoTab('${t.id}')">${t.icon} ${t.label}</button>`
+  ).join("");
+}
+
+function selDemoTab(id) {
+  demoTabActivo = id;
+  demoDetalle = null;
+  quizIdx = 0; quizRespondida = false;
+  renderDemoTabs();
+  renderDemoContenido();
+}
+
+function renderDemoContenido() {
+  const cont = document.getElementById("demo-contenido");
+
+  if(demoTabActivo === "quiz") {
+    renderQuiz(cont);
+    return;
+  }
+
+  if(demoDetalle) {
+    cont.innerHTML = `
+      <div class="demo-detalle">
+        <div class="demo-detalle-acciones" style="margin-bottom:16px">
+          <button class="btn-demo-volver" onclick="demoDetalle=null;renderDemoContenido()">← Volver</button>
+          <button class="btn-demo-escuchar" onclick="hablar(document.getElementById('demo-texto-body').textContent)">🔊 Escuchar</button>
+          <button class="btn-demo-ia" onclick="preguntarDemoIA('${esc(demoDetalle.titulo)}')">🤖 Preguntar más</button>
+        </div>
+        <div class="demo-card-badge">${demoDetalle.badge}</div>
+        <h2>${demoDetalle.icon} ${demoDetalle.titulo}</h2>
+        <div class="demo-detalle-body" id="demo-texto-body">${demoDetalle.cuerpo}</div>
+      </div>`;
+    return;
+  }
+
+  // Tarjetas del tema activo
+  const tema = DEMO_TEMAS.find(t=>t.id===demoTabActivo);
+  if(!tema) return;
+
+  cont.innerHTML = `<div class="demo-cargando"><div class="demo-spinner">🤖</div><div>Generando contenido educativo con IA…</div></div>`;
+
+  // Generar contenido con IA
+  fetch(API_CLAUDE, {
+    method:"POST", headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({
+      system: "Eres un educador cívico colombiano especializado en el Bajo Cauca Antioqueño. Explica de forma clara, didáctica y accesible para jóvenes y adultos de la región. Usa ejemplos locales concretos. Formato: texto corrido con párrafos bien estructurados, sin markdown ni asteriscos.",
+      messages:[{role:"user", content: tema.prompt}],
+      max_tokens: 1200
+    })
+  })
+  .then(r=>r.json())
+  .then(d=>{
+    const texto = d.content?.find(b=>b.type==="text")?.text || "No se pudo generar el contenido.";
+    demoDetalle = {icon:tema.icon, titulo:tema.label, badge:tema.badge, cuerpo:texto};
+    renderDemoContenido();
+  })
+  .catch(()=>{
+    cont.innerHTML = `<div class="demo-cargando" style="color:#e63946">⚠️ Error generando contenido. Intenta de nuevo.</div>`;
+  });
+}
+
+function renderQuiz(cont) {
+  if(quizIdx >= QUIZ_PREGUNTAS.length) {
+    cont.innerHTML = `<div class="quiz-box" style="text-align:center">
+      <div style="font-size:48px;margin-bottom:16px">🏆</div>
+      <h2 style="color:#4fc3f7;margin-bottom:12px">¡Completaste el Quiz Cívico!</h2>
+      <p style="color:#aaa;margin-bottom:20px">Sigues fortaleciendo tu conocimiento democrático.<br>Recuerda: un ciudadano informado es un ciudadano libre.</p>
+      <button class="btn-siguiente-quiz" onclick="quizIdx=0;quizRespondida=false;renderQuiz(document.getElementById('demo-contenido'))">🔄 Repetir Quiz</button>
+    </div>`;
+    return;
+  }
+
+  const q = QUIZ_PREGUNTAS[quizIdx];
+  cont.innerHTML = `
+    <div class="quiz-box">
+      <div style="font-size:11px;color:#4fc3f7;font-family:monospace;margin-bottom:12px">PREGUNTA ${quizIdx+1} DE ${QUIZ_PREGUNTAS.length}</div>
+      <div class="quiz-pregunta">${q.p}</div>
+      <div class="quiz-opciones">
+        ${q.ops.map((op,i)=>`<button class="quiz-opcion" id="qop${i}" onclick="responderQuiz(${i})">${op}</button>`).join("")}
+      </div>
+      <div id="quiz-feedback"></div>
+      <div id="quiz-next"></div>
+    </div>`;
+}
+
+function responderQuiz(idx) {
+  if(quizRespondida) return;
+  quizRespondida = true;
+  const q = QUIZ_PREGUNTAS[quizIdx];
+  const fb = document.getElementById("quiz-feedback");
+  const nx = document.getElementById("quiz-next");
+
+  document.querySelectorAll(".quiz-opcion").forEach((btn,i)=>{
+    btn.disabled = true;
+    if(i===q.r) btn.classList.add("correcta");
+    else if(i===idx && idx!==q.r) btn.classList.add("incorrecta");
+  });
+
+  if(idx===q.r){
+    fb.innerHTML=`<div class="quiz-feedback ok">✅ ¡Correcto! ${q.exp}</div>`;
+  } else {
+    fb.innerHTML=`<div class="quiz-feedback mal">❌ La respuesta correcta es: <strong>${q.ops[q.r]}</strong>. ${q.exp}</div>`;
+  }
+  nx.innerHTML=`<button class="btn-siguiente-quiz" onclick="quizIdx++;quizRespondida=false;renderQuiz(document.getElementById('demo-contenido'))">${quizIdx+1<QUIZ_PREGUNTAS.length?"Siguiente pregunta →":"Ver resultado 🏆"}</button>`;
+}
+
+function preguntarDemoIA(titulo) {
+  setInput(`Quiero saber más sobre: ${titulo} en el contexto del Bajo Cauca Antioqueño`);
+  document.getElementById("panel-chat").classList.add("visible");
+  document.getElementById("btn-chat").textContent="✕";
+  document.getElementById("btn-chat").classList.remove("cerrado");
+}
+
 // ── INIT ─────────────────────────────────────────────────
 renderCats();
 renderNoticias(); // skeletons
+renderDemocracia();
 cargarNoticias(true);
 </script>
 </body>
