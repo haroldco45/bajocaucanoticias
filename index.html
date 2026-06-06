@@ -118,6 +118,57 @@ footer .footer-marca{color:#777;margin-bottom:4px}
 
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
 @keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* ===== BANNERS PUBLICITARIOS ===== */
+.banner-container{width:100%;max-width:960px;margin:0 auto;padding:0 16px 16px}
+.banner-label{font-size:9px;color:#444;font-family:monospace;letter-spacing:2px;text-align:right;margin-bottom:4px;text-transform:uppercase}
+
+/* Banner horizontal principal */
+.banner-horizontal{
+  display:flex;align-items:center;gap:0;border-radius:10px;overflow:hidden;
+  cursor:pointer;transition:transform .2s,box-shadow .2s;text-decoration:none;
+  box-shadow:0 2px 12px rgba(0,0,0,.4);position:relative;min-height:80px;
+}
+.banner-horizontal:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,0,0,.6)}
+
+/* Distrileco */
+.banner-distrileco{background:linear-gradient(135deg,#1a3a1a 0%,#0d2b0d 50%,#1a3a1a 100%);border:1px solid #2d5a2d}
+.banner-distrileco .banner-icon{background:#2d6a2d;padding:16px 20px;display:flex;align-items:center;justify-content:center;flex-shrink:0;min-width:70px}
+.banner-distrileco .banner-body{flex:1;padding:12px 16px}
+.banner-distrileco .banner-marca{font-size:18px;font-weight:900;color:#4caf50;letter-spacing:1px;font-family:monospace}
+.banner-distrileco .banner-slogan{font-size:12px;color:#aaa;margin-top:2px}
+.banner-distrileco .banner-detalle{font-size:11px;color:#4caf50;margin-top:4px;font-family:monospace}
+.banner-distrileco .banner-cta{background:#2d6a2d;color:#fff;padding:8px 14px;border-radius:6px;font-size:11px;font-weight:700;white-space:nowrap;flex-shrink:0;margin-right:12px;font-family:monospace;border:1px solid #4caf50}
+
+/* Vibras Positivas */
+.banner-vibras{background:linear-gradient(135deg,#0d0d2b 0%,#1a1a3a 50%,#0d0d2b 100%);border:1px solid #3a2d6a}
+.banner-vibras .banner-icon{background:#2d2d6a;padding:16px 20px;display:flex;align-items:center;justify-content:center;flex-shrink:0;min-width:70px}
+.banner-vibras .banner-body{flex:1;padding:12px 16px}
+.banner-vibras .banner-marca{font-size:16px;font-weight:900;color:#9b5de5;letter-spacing:1px}
+.banner-vibras .banner-slogan{font-size:12px;color:#aaa;margin-top:2px}
+.banner-vibras .banner-detalle{font-size:11px;color:#9b5de5;margin-top:4px;font-family:monospace}
+.banner-vibras .banner-cta{background:#2d2d6a;color:#fff;padding:8px 14px;border-radius:6px;font-size:11px;font-weight:700;white-space:nowrap;flex-shrink:0;margin-right:12px;font-family:monospace;border:1px solid #9b5de5}
+
+/* Banner lateral strip */
+.banner-strip{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 16px;border-radius:8px;cursor:pointer;
+  transition:opacity .2s;text-decoration:none;
+  animation:slideIn .3s ease;
+}
+.banner-strip:hover{opacity:.85}
+.banner-strip-dist{background:linear-gradient(90deg,#1a3a1a,#0d2b0d);border:1px solid #2d5a2d}
+.banner-strip-vib{background:linear-gradient(90deg,#0d0d2b,#1a1a3a);border:1px solid #3a2d6a}
+.strip-txt{font-size:12px;font-weight:700}
+.strip-sub{font-size:10px;color:#888;margin-top:1px}
+
+/* Banners grid 2 columnas */
+.banners-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:580px){.banners-grid{grid-template-columns:1fr}.banner-horizontal{flex-direction:column;text-align:center}.banner-horizontal .banner-cta{margin:0 0 12px 0}}
+
+/* Pulsing badge */
+.banner-badge{position:absolute;top:8px;right:8px;background:#e63946;color:#fff;font-size:8px;font-weight:700;padding:2px 6px;border-radius:4px;font-family:monospace;letter-spacing:1px;animation:pulse 2s infinite}
+
 </style>
 </head>
 <body>
@@ -151,12 +202,68 @@ footer .footer-marca{color:#777;margin-bottom:4px}
 
 <main>
   <div id="info-bar"></div>
+  
+<!-- ===== BANNER TOP - DISTRILECO ===== -->
+<div class="banner-container" style="padding-top:4px">
+  <div class="banner-label">Publicidad</div>
+  <a class="banner-horizontal banner-distrileco" href="https://www.distrileco.com" target="_blank" rel="noopener" onclick="gtag&&gtag('event','click',{event_category:'banner',event_label:'distrileco-top'})">
+    <div class="banner-icon" style="font-size:32px">🏪</div>
+    <div class="banner-body">
+      <div class="banner-marca">DISTRILECO</div>
+      <div class="banner-slogan">Distribuidora mayorista de productos de la canasta familiar</div>
+      <div class="banner-detalle">📍 Caucasia, Antioquia &nbsp;·&nbsp; +40 años de experiencia &nbsp;·&nbsp; Nutresa · Colombina · Grupo Familia</div>
+    </div>
+    <div class="banner-cta">Ver tienda →</div>
+    <span class="banner-badge">MAYORISTA</span>
+  </a>
+</div>
+
   <div id="destacada-wrap"></div>
   <div id="detalle"></div>
   <div class="grid-noticias" id="grid"></div>
   <div class="empty" id="empty" style="display:none"><p>No hay noticias en esta categoría.</p></div>
+  
+<!-- ===== BANNERS MEDIO - 2 COLUMNAS ===== -->
+<div class="banner-container" style="margin-top:8px">
+  <div class="banner-label">Patrocinadores</div>
+  <div class="banners-grid">
+    <a class="banner-horizontal banner-distrileco" href="https://tienda.distrileco.com" target="_blank" rel="noopener" style="min-height:70px">
+      <div class="banner-icon" style="font-size:26px;min-width:56px">🛒</div>
+      <div class="banner-body">
+        <div class="banner-marca" style="font-size:14px">TIENDA DISTRILECO</div>
+        <div class="banner-slogan" style="font-size:11px">Pedidos online · Entrega rápida</div>
+        <div class="banner-detalle">📞 320 613 4983</div>
+      </div>
+    </a>
+    <a class="banner-horizontal banner-vibras" href="https://www.vibraspositivashm.com" target="_blank" rel="noopener" style="min-height:70px">
+      <div class="banner-icon" style="font-size:26px;min-width:56px">💻</div>
+      <div class="banner-body">
+        <div class="banner-marca" style="font-size:14px">VIBRAS POSITIVAS HM</div>
+        <div class="banner-slogan" style="font-size:11px">Apps · PWA · Desarrollo digital</div>
+        <div class="banner-detalle">📱 +57 311 770 0431</div>
+      </div>
+    </a>
+  </div>
+</div>
+
   <div id="contador-update"></div>
 </main>
+
+
+<!-- ===== BANNER BOTTOM - VIBRAS POSITIVAS ===== -->
+<div class="banner-container" style="margin-top:8px">
+  <div class="banner-label">Publicidad</div>
+  <a class="banner-horizontal banner-vibras" href="https://www.vibraspositivashm.com" target="_blank" rel="noopener">
+    <div class="banner-icon" style="font-size:32px">🚀</div>
+    <div class="banner-body">
+      <div class="banner-marca">VIBRAS POSITIVAS HM</div>
+      <div class="banner-slogan">Desarrollo de aplicaciones web y PWA para tu negocio en el Bajo Cauca</div>
+      <div class="banner-detalle">✅ Menús digitales · Tiendas online · Apps a medida · Caucasia, Antioquia</div>
+    </div>
+    <div class="banner-cta">Ver portafolio →</div>
+    <span class="banner-badge" style="background:#9b5de5">DIGITAL</span>
+  </a>
+</div>
 
 <footer>
   <div class="footer-marca">Bajo Cauca Noticias · Caucasia, Antioquia</div>
