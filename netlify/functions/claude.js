@@ -18,6 +18,14 @@ exports.handler = async (event) => {
   try {
     const body = JSON.parse(event.body);
 
+    // Construir payload limpio
+    const payload = {
+      model: "claude-sonnet-4-20250514",
+      max_tokens: body.max_tokens || 1000,
+      messages: body.messages || [],
+    };
+    if (body.system) payload.system = body.system;
+
     const response = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       headers: {
@@ -25,15 +33,14 @@ exports.handler = async (event) => {
         "x-api-key": process.env.ANTHROPIC_API_KEY,
         "anthropic-version": "2023-06-01",
       },
-      body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
-        max_tokens: 1000,
-        system: body.system || "",
-        messages: body.messages || [],
-      }),
+      body: JSON.stringify(payload),
     });
 
     const data = await response.json();
+
+    // Log para debug
+    console.log("Anthropic status:", response.status);
+    if (data.error) console.log("Anthropic error:", JSON.stringify(data.error));
 
     return {
       statusCode: 200,
@@ -44,6 +51,7 @@ exports.handler = async (event) => {
       body: JSON.stringify(data),
     };
   } catch (err) {
+    console.log("Handler error:", err.message);
     return {
       statusCode: 500,
       headers: { "Access-Control-Allow-Origin": "*" },
